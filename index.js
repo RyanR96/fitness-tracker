@@ -1,11 +1,22 @@
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const prisma = require("./client");
 const jwt = require("jsonwebtoken");
 const authRoutes = require("./routes/auth");
 const verifyToken = require("./middleware/verifyToken");
 
 const app = express();
+app.use(express.json());
+
+async function testPrismaConnection() {
+  try {
+    const users = await prisma.user.findMany();
+    console.log("Prisma connected, this many users in DB: " + users.length);
+  } catch (err) {
+    console.error("Prisma error in index", err);
+  }
+}
+
+testPrismaConnection();
 
 app.get("/", (req, res) => {
   res.json({

@@ -17,4 +17,47 @@ model User {
   id Int @id @default(autoincrement())
   username String @unique
   password String
+  workouts Workout[]
+  completedWorkouts CompletedWorkout[]
+}
+
+
+model Workout {
+  id Int @id @default(autoincrement())
+  name String
+  user User  @relation(fields: [userId], references: [id])
+  userId Int
+  completedWorkouts CompletedWorkout[]
+
+  exercises Exercise[]
+}
+
+model CompletedWorkout {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  workout Workout? @relation(fields: [workoutId], references: [id])
+  workoutId Int?
+  date DateTime @default(now())
+  exercises Exercise[]
+}
+
+model Exercise {
+  id Int @id @default(autoincrement())
+  name String
+  workout Workout? @relation(fields: [workoutId], references: [id])
+  workoutId Int? 
+  completedWorkout CompletedWorkout? @relation(fields: [completedWorkoutId], references: [id])
+  completedWorkoutId Int?
+  set Set[]
+}
+
+model Set {
+  id Int @id @default(autoincrement())
+  exercise Exercise @relation(fields: [exerciseId], references: [id])
+  exerciseId Int
+  reps Float
+  weight Float
+  formRating Int
+  dropset Boolean
 }

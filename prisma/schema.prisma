@@ -42,9 +42,18 @@ model CompletedWorkout {
   exercises Exercise[]
 }
 
+model ExerciseTemplate {
+  id Int @id @default(autoincrement())
+  name String @unique
+
+  exercise Exercise[]
+}
+
 model Exercise {
   id Int @id @default(autoincrement())
-  name String
+  // *SHOULD PROBABLY CHANGE DATA BELOW TO TEMPLATEID NOT TEMPLATENAME - THIS ONLY MEANT TO BE TEMP FOR DEV TESTING
+  exerciseTemplate ExerciseTemplate @relation(fields: [exerciseTemplateName], references: [name])
+  exerciseTemplateName String
   workout Workout? @relation(fields: [workoutId], references: [id])
   workoutId Int? 
   completedWorkout CompletedWorkout? @relation(fields: [completedWorkoutId], references: [id])

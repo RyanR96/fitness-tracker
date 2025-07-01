@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRoutes);
 app.use("/api/workouts", workoutRoutes);
 
-app.post("/api/posts", verifyToken, (req, res) => {
+/* app.post("/api/posts", verifyToken, (req, res) => {      Same as below, just old method, leaving here for learning
   jwt.verify(req.token, "secret", (err, authData) => {
     if (err) {
       res.sendStatus(403);
@@ -38,6 +38,13 @@ app.post("/api/posts", verifyToken, (req, res) => {
         authData,
       });
     }
+  });
+}); */
+
+app.post("/api/posts", verifyToken, (req, res) => {
+  res.json({
+    message: "Success",
+    authData: req.user,
   });
 });
 

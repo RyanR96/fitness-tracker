@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
+const bcrypt = require("bcrypt");
 
 async function main() {
   // Exercise Templates
 
-  const [benchPress, overheadPress, dips] = await Promise.all([
+  const [benchPress, overheadPress, dips, seatedPress] = await Promise.all([
     prisma.exerciseTemplate.upsert({
       where: { name: "Bench Press" },
       update: {},
@@ -20,14 +21,20 @@ async function main() {
       update: {},
       create: { name: "Dips" },
     }),
+    prisma.exerciseTemplate.upsert({
+      where: { name: "Seated Press" },
+      update: {},
+      create: { name: "Seated Press" },
+    }),
   ]);
 
   //Upserting user
+  const hashedPassword = await bcrypt.hash("123", 10);
 
   const user = await prisma.user.upsert({
     where: { username: "ryan" },
     update: {},
-    create: { username: "ryan", password: "123" },
+    create: { username: "ryan", password: hashedPassword },
   });
 
   // Create workout
@@ -41,6 +48,19 @@ async function main() {
           { exerciseTemplateName: benchPress.name },
           { exerciseTemplateName: overheadPress.name },
           { exerciseTemplateName: dips.name },
+        ],
+      },
+    },
+  });
+
+  const workout2 = await prisma.workout.create({
+    data: {
+      name: "Push day 2",
+      userId: user.id,
+      exercises: {
+        create: [
+          { exerciseTemplateName: benchPress.name },
+          { exerciseTemplateName: seatedPress.name },
         ],
       },
     },

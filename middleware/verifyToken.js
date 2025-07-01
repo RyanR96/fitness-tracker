@@ -8,7 +8,9 @@ function verifyToken(req, res, next) {
   if (typeof bearerHeader !== "undefined") {
     const bearer = bearerHeader.split(" ");
     const bearerToken = bearer[1];
-    req.token = bearerToken;
+    //req.token = bearerToken;
+    const decoded = jwt.verify(bearerToken, "secret");
+    req.user = { id: decoded.id };
     next();
   } else {
     res.sendStatus(403);

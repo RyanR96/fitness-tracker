@@ -6,6 +6,9 @@
   "scripts": {
     "devStart": "nodemon index.js"
   },
+  "prisma": {
+    "seed": "ts-node seed.ts"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RyanR96/fitness-tracker.git"

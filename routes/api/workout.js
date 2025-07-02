@@ -28,4 +28,39 @@ router.get("/:id", verifyToken, async (req, res) => {
   }
 });
 
+router.post("/", verifyToken, async (req, res) => {
+  const { name, exerciseTemplateName } = req.body;
+
+  if (!name || !Array.isArray(exerciseTemplateName)) {
+    return res.status(400).json({ error: "Name and exercises must be listed" });
+  }
+  try {
+    const createdWorkout = await prisma.workout.create({
+      data: {
+        name,
+        userId: req.user.id,
+        exercises: {
+          create: exerciseTemplateName.map(templateName => ({
+            exerciseTemplate: {
+              connect: {
+                name: templateName,
+              },
+            },
+          })),
+        },
+      },
+      include: {
+        exercises: {
+          include: {
+            exerciseTemplate: true,
+          },
+        },
+      },
+    });
+    res.status(201).json(createdWorkout);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 module.exports = router;

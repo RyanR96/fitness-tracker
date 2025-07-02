@@ -63,4 +63,23 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
+//Patch workout name
+router.patch("/:id", verifyToken, async (req, res) => {
+  const workoutId = parseInt(req.params.id);
+  const { name } = req.body;
+
+  if (!name) return res.status(400).json({ error: "New valid name required" });
+
+  try {
+    const updatedWorkout = await prisma.workout.update({
+      where: { id: workoutId },
+      data: { name },
+    });
+    res.status(200).json(updatedWorkout);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err });
+  }
+});
+
 module.exports = router;

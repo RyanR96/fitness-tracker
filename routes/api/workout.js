@@ -63,6 +63,47 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
+//Patch workout exercises               @@@@@@@@@@@@@@@ Can be made more efficiently, currently rebuilds exercise
+router.patch("/:id/exercises", verifyToken, async (req, res) => {
+  const workoutId = parseInt(req.params.id);
+  const { newExercises = [] } = req.body;
+
+  try {
+    const workout = await prisma.workout.findUnique({
+      where: { id: workoutId },
+    });
+
+    if (!workout || workout.userId !== req.user.id)
+      return res.status(403).json({ error: "Not authorized" });
+
+    await prisma.exercise.deleteMany({ where: { workoutId } });
+
+    const updatedWorkout = await prisma.workout.update({
+      where: { id: workoutId },
+      data: {
+        exercises: {
+          create: newExercises.map(newExercise => ({
+            exerciseTemplate: {
+              connect: { name: newExercise },
+            },
+          })),
+        },
+      },
+      include: {
+        exercises: {
+          include: {
+            exerciseTemplate: true,
+          },
+        },
+      },
+    });
+    res.status(200).json(updatedWorkout);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err });
+  }
+});
+
 //Patch workout name
 router.patch("/:id", verifyToken, async (req, res) => {
   const workoutId = parseInt(req.params.id);

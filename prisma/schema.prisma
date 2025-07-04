@@ -54,7 +54,7 @@ model Exercise {
   // *SHOULD PROBABLY CHANGE DATA BELOW TO TEMPLATEID NOT TEMPLATENAME - THIS ONLY MEANT TO BE TEMP FOR DEV TESTING
   exerciseTemplate ExerciseTemplate @relation(fields: [exerciseTemplateName], references: [name])
   exerciseTemplateName String
-  workout Workout? @relation(fields: [workoutId], references: [id])
+  workout Workout? @relation(fields: [workoutId], references: [id], onDelete: Cascade)
   workoutId Int? 
   completedWorkout CompletedWorkout? @relation(fields: [completedWorkoutId], references: [id])
   completedWorkoutId Int?

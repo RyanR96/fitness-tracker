@@ -123,4 +123,26 @@ router.patch("/:id", verifyToken, async (req, res) => {
   }
 });
 
+router.delete("/:id", verifyToken, async (req, res) => {
+  const workoutId = parseInt(req.params.id);
+
+  try {
+    const workout = await prisma.workout.findUnique({
+      where: { id: workoutId },
+    });
+
+    if (!workout || workout.userId !== req.user.id)
+      return res.status(403).json({ error: "Not authorized" });
+
+    await prisma.workout.delete({
+      where: { id: workoutId },
+    });
+
+    res.status(200).json({ message: "Workout deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to delete workout" + err });
+  }
+});
+
 module.exports = router;

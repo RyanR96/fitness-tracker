@@ -9,6 +9,7 @@ const getAllWorkouts = async (req, res) => {
     res.json(workouts);
   } catch (err) {
     console.error(err);
+    res.status(500).json({ error: "Failed to get  workouts", message: err });
   }
 };
 

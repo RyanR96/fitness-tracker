@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const authRoutes = require("./routes/auth");
 const verifyToken = require("./middleware/verifyToken");
 const workoutRoutes = require("./routes/api/workout");
+const completedWorkoutRoutes = require("./routes/api/completedWorkout");
 
 const app = express();
 app.use(express.json());
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/api/workouts", workoutRoutes);
+app.use("/api/completedWorkouts", completedWorkoutRoutes);
 
 /* app.post("/api/posts", verifyToken, (req, res) => {      Same as below, just old method, leaving here for learning
   jwt.verify(req.token, "secret", (err, authData) => {

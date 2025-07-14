@@ -63,23 +63,23 @@ const createCompletedWorkout = async (req, res) => {
               connect: {
                 name: exercise.exerciseTemplateName,
               },
-              set: {
-                create: exercise.sets.map(s => ({
-                  weight: s.weight,
-                  reps: s.reps,
-                  formRating: s.formRating,
-                  dropset: s.dropset ?? false,
-                })),
-              },
+            },
+            set: {
+              create: exercise.sets.map(s => ({
+                weight: s.weight,
+                reps: s.reps,
+                formRating: s.formRating,
+                dropset: s.dropset ?? false,
+              })),
             },
           })),
         },
-        include: {
-          exercises: {
-            include: {
-              exerciseTemplateName: true,
-              set: true,
-            },
+      },
+      include: {
+        exercises: {
+          include: {
+            exerciseTemplate: true,
+            set: true,
           },
         },
       },

@@ -12,4 +12,10 @@ router.get(
   completedWorkoutController.getCompletedWorkoutById
 );
 
+router.post(
+  "/",
+  verifyToken,
+  completedWorkoutController.createCompletedWorkout
+);
+
 module.exports = router;

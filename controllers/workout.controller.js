@@ -22,6 +22,7 @@ const getWorkoutById = async (req, res) => {
     res.json(workout);
   } catch (err) {
     console.error(err);
+    res.status(500).json({ error: "Could not get  workout ", message: err });
   }
 };
 

@@ -40,7 +40,7 @@ const getCompletedWorkoutById = async (req, res) => {
       return res.status(404).json({ error: "Completed workout not found" });
     }
     res.status(200).json(completedWorkout);
-  } catch {
+  } catch (err) {
     console.error(err);
     res
       .status(500)
@@ -48,7 +48,53 @@ const getCompletedWorkoutById = async (req, res) => {
   }
 };
 
+const createCompletedWorkout = async (req, res) => {
+  try {
+    const { workoutId, completedExercises } = req.body;
+
+    const createdCompletedWorkout = await prisma.completedWorkout.create({
+      data: {
+        userId: req.user.id,
+        workoutId,
+        date: new Date(),
+        exercises: {
+          create: completedExercises.map(exercise => ({
+            exerciseTemplate: {
+              connect: {
+                name: exercise.exerciseTemplateName,
+              },
+              set: {
+                create: exercise.sets.map(s => ({
+                  weight: s.weight,
+                  reps: s.reps,
+                  formRating: s.formRating,
+                  dropset: s.dropset ?? false,
+                })),
+              },
+            },
+          })),
+        },
+        include: {
+          exercises: {
+            include: {
+              exerciseTemplateName: true,
+              set: true,
+            },
+          },
+        },
+      },
+    });
+    res.status(200).json(createdCompletedWorkout);
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: "Could not create completed workout", message: err });
+  }
+};
+
 module.exports = {
   getCompletedWorkouts,
   getCompletedWorkoutById,
+  createCompletedWorkout,
 };

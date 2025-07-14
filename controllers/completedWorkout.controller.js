@@ -22,6 +22,33 @@ const getCompletedWorkouts = async (req, res) => {
   }
 };
 
+const getCompletedWorkoutById = async (req, res) => {
+  try {
+    const completedWorkout = await prisma.completedWorkout.findFirst({
+      where: { id: parseInt(req.params.id), userId: req.user.id },
+      include: {
+        workout: true,
+        exercises: {
+          include: {
+            exerciseTemplate: true,
+            set: true,
+          },
+        },
+      },
+    });
+    if (!completedWorkout) {
+      return res.status(404).json({ error: "Completed workout not found" });
+    }
+    res.status(200).json(completedWorkout);
+  } catch {
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: "Could not get completed workout ", message: err });
+  }
+};
+
 module.exports = {
   getCompletedWorkouts,
+  getCompletedWorkoutById,
 };

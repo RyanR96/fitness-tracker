@@ -6,5 +6,10 @@ const completedWorkoutController = require("../../controllers/completedWorkout.c
 const router = express.Router();
 
 router.get("/", verifyToken, completedWorkoutController.getCompletedWorkouts);
+router.get(
+  "/:id",
+  verifyToken,
+  completedWorkoutController.getCompletedWorkoutById
+);
 
 module.exports = router;

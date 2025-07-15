@@ -56,14 +56,14 @@ model Exercise {
   exerciseTemplateName String
   workout Workout? @relation(fields: [workoutId], references: [id], onDelete: Cascade)
   workoutId Int? 
-  completedWorkout CompletedWorkout? @relation(fields: [completedWorkoutId], references: [id])
+  completedWorkout CompletedWorkout? @relation(fields: [completedWorkoutId], references: [id], onDelete: Cascade)
   completedWorkoutId Int?
   set Set[]
 }
 
 model Set {
   id Int @id @default(autoincrement())
-  exercise Exercise @relation(fields: [exerciseId], references: [id])
+  exercise Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
   exerciseId Int
   reps Float
   weight Float

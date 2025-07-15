@@ -18,4 +18,10 @@ router.post(
   completedWorkoutController.createCompletedWorkout
 );
 
+router.delete(
+  "/:id",
+  verifyToken,
+  completedWorkoutController.deleteCompletedWorkout
+);
+
 module.exports = router;

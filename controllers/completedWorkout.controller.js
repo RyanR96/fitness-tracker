@@ -93,8 +93,31 @@ const createCompletedWorkout = async (req, res) => {
   }
 };
 
+const deleteCompletedWorkout = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    const cWorkout = await prisma.completedWorkout.findUnique({
+      where: { id: id },
+    });
+
+    if (!cWorkout || cWorkout.userId !== req.user.id)
+      return res.status(403).json({ error: "Not authorized" });
+
+    await prisma.completedWorkout.delete({
+      where: { id: id },
+    });
+
+    res.status(200).json({ message: "Completed workout deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to delete workout" + err });
+  }
+};
+
 module.exports = {
   getCompletedWorkouts,
   getCompletedWorkoutById,
   createCompletedWorkout,
+  deleteCompletedWorkout,
 };

@@ -5,9 +5,17 @@ const authRoutes = require("./routes/auth");
 const verifyToken = require("./middleware/verifyToken");
 const workoutRoutes = require("./routes/api/workout");
 const completedWorkoutRoutes = require("./routes/api/completedWorkout");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 async function testPrismaConnection() {
   try {

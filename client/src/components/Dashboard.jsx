@@ -1,8 +1,10 @@
+import bg from "../assets/bg.jpg";
+
 function Dashboard() {
   return (
-    <>
-      <div>Dashboard</div>
-    </>
+    <div className="b">
+      <div className="a" style={{ backgroundImage: `url(${bg})` }} />
+    </div>
   );
 }
 

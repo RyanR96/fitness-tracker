@@ -1,4 +1,10 @@
+import { useState } from "react";
+import CreateWorkoutModal from "./CreateWorkoutModal";
+
 function Dashboard() {
+  const [isCreateWorkoutModalOpen, setIsCreateWorkoutModalOpen] =
+    useState(false);
+
   return (
     <div className="min-h-screen flex flex-col">
       {" "}
@@ -21,7 +27,10 @@ function Dashboard() {
             <p className="text-sm text-gray-400 mb-4">
               Create a workout from our list of exercises
             </p>
-            <button className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300">
+            <button
+              onClick={() => setIsCreateWorkoutModalOpen(true)}
+              className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+            >
               Create Workout
             </button>
           </div>
@@ -59,6 +68,10 @@ function Dashboard() {
           </div>
         </div>
       </div>
+      <CreateWorkoutModal
+        isOpen={isCreateWorkoutModalOpen}
+        onClose={() => setIsCreateWorkoutModalOpen(false)}
+      />
     </div>
   );
 }

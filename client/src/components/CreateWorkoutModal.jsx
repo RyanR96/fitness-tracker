@@ -49,7 +49,7 @@ function CreateWorkoutModal(props) {
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3"
             />
             {selectedExercise.length === 0 ? (
-              <p>No exercises selected</p>
+              <p className="text-gray-500">No exercises selected</p>
             ) : (
               <ul>
                 {selectedExercise.map(ex => (

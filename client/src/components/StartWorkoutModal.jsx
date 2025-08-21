@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function StartWorkoutModal(props) {
   const { isOpen, onClose } = props;
+  const navigate = useNavigate();
 
   const [workouts, setWorkouts] = useState([]);
   const [selectedWorkout, setSelectedWorkout] = useState(null);
@@ -23,6 +25,12 @@ function StartWorkoutModal(props) {
   const handleClose = () => {
     onClose();
     setSelectedWorkout(null);
+  };
+
+  const handleStart = () => {
+    if (!selectedWorkout) return alert("Please select a workout");
+    navigate(`/workout/${selectedWorkout.id}`);
+    onClose();
   };
 
   return (
@@ -80,7 +88,10 @@ function StartWorkoutModal(props) {
           </div>
         </div>
         <div className="mt-6 flex justify-between gap-4">
-          <button className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300">
+          <button
+            className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+            onClick={handleStart}
+          >
             Start Workout
           </button>
 

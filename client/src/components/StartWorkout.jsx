@@ -21,6 +21,14 @@ function StartWorkout() {
 
   const currentExercise = exercise[currentExerciseIndex];
 
+  const handleSetChange = (setIndex, field, value) => {
+    setExercise(prev => {
+      const newData = [...prev];
+      newData[currentExerciseIndex].sets[setIndex][field] = value;
+      return newData;
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col">
       <h1 className="text 3x1 font-bold mb-2 text-center">
@@ -33,6 +41,51 @@ function StartWorkout() {
           <h2 className="text-2x1 font-semibold mb-4 text-center">
             {currentExercise.exerciseTemplateName}
           </h2>
+
+          {currentExercise.sets.map((s, i) => (
+            <div key={i} className="grid grid-cols-4 gap-4 mb-4 items-end">
+              <div className="flex items-center gap-6">
+                <label className="block mb-1">Weight:</label>
+                <input
+                  className="w-full border rounded px-3 py-2"
+                  type="number"
+                  value={s.weight}
+                  onChange={e => handleSetChange(i, "weight", e.target.value)}
+                />
+              </div>
+              <div className="flex items-center gap-6">
+                <label className="block mb-1">Reps:</label>
+                <input
+                  className="w-full border rounded px-3 py-2"
+                  type="number"
+                  value={s.reps}
+                  onChange={e => handleSetChange(i, "reps", e.target.value)}
+                />
+              </div>
+              <div className="flex items-center gap-6">
+                <label className="block mb-1">Form:</label>
+                <input
+                  className="w-full border rounded px-3 py-2"
+                  type="number"
+                  value={s.formRating}
+                  onChange={e =>
+                    handleSetChange(i, "formRating", e.target.value)
+                  }
+                />
+              </div>
+              <div className="flex items-center mt-6">
+                <label className="mr-2">Dropset:</label>
+                <input
+                  className="w-10 h-10"
+                  type="checkbox"
+                  checked={s.dropSet}
+                  onChange={e =>
+                    handleSetChange(i, "dropSet", e.target.checked)
+                  }
+                />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

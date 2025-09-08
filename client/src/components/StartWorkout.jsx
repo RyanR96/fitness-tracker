@@ -29,6 +29,22 @@ function StartWorkout() {
     });
   };
 
+  const addSet = () => {
+    setExercise(prev => {
+      const newData = [...prev];
+
+      const exercise = { ...newData[currentExerciseIndex] };
+
+      exercise.sets = [
+        ...exercise.sets,
+        { weight: "", reps: "", formRating: "", dropSet: false },
+      ];
+      newData[currentExerciseIndex] = exercise;
+
+      return newData;
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col">
       <h1 className="text 3x1 font-bold mb-2 text-center">
@@ -92,6 +108,13 @@ function StartWorkout() {
               </div>
             </div>
           ))}
+
+          <button
+            className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+            onClick={addSet}
+          >
+            Add set
+          </button>
         </div>
       </div>
     </div>

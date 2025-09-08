@@ -30,6 +30,10 @@ function StartWorkout() {
   };
 
   const addSet = () => {
+    console.log(exercise);
+    console.log(currentExercise);
+    console.log(currentExerciseIndex);
+    console.log(exercise.length);
     setExercise(prev => {
       const newData = [...prev];
 
@@ -43,6 +47,15 @@ function StartWorkout() {
 
       return newData;
     });
+  };
+
+  const handleNext = () => {
+    setCurrentExerciseIndex(currentExerciseIndex + 1);
+  };
+
+  const handlePrev = () => {
+    if (currentExerciseIndex > 0)
+      setCurrentExerciseIndex(currentExerciseIndex - 1);
   };
 
   return (
@@ -109,12 +122,35 @@ function StartWorkout() {
             </div>
           ))}
 
-          <button
-            className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
-            onClick={addSet}
-          >
-            Add set
-          </button>
+          <div className="flex justify-between items-center mt-12 ">
+            <button
+              className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+              onClick={addSet}
+            >
+              Add set
+            </button>
+            <div className="border-2 border-black">
+              <button
+                className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                onClick={handlePrev}
+              >
+                Prev
+              </button>
+
+              {currentExerciseIndex === exercise.length - 1 ? (
+                <button className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300">
+                  Finish
+                </button>
+              ) : (
+                <button
+                  className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                  onClick={handleNext}
+                >
+                  Next
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

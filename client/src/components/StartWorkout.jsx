@@ -30,6 +30,11 @@ function StartWorkout() {
   };
 
   const addSet = () => {
+    if (currentExercise.sets.length >= 10) {
+      alert("Too many sets!");
+      return;
+    }
+
     console.log(exercise);
     console.log(currentExercise);
     console.log(currentExerciseIndex);
@@ -60,10 +65,10 @@ function StartWorkout() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col">
-      <h1 className="text 3x1 font-bold mb-2 text-center">
-        Workout name - change to dynamic later
-      </h1>
-      <p className="text-center mb-4">Exercise 1 of 3 - change to dynamic</p>
+      <h1 className="text 3x1 font-bold mb-2 text-center">{workout.name}</h1>
+      <p className="text-center mb-4">
+        Exercise {currentExerciseIndex + 1} of {exercise.length}
+      </p>
 
       <div className="flex-1 flex flex-col md:flex-row gap-6">
         <div className="flex-1 bg-gray-200 p-6 rounded shadow">

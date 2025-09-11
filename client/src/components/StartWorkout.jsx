@@ -1,17 +1,19 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function StartWorkout() {
+  const navigate = useNavigate();
   const workout = {
     id: 1,
     name: "Push Day",
     exercises: [
       {
         exerciseTemplateName: "Push Ups",
-        sets: [{ weight: "", reps: "", formRating: "", dropSet: false }],
+        sets: [{ weight: "", reps: "", formRating: 1, dropSet: false }],
       },
       {
         exerciseTemplateName: "Bench Press",
-        sets: [{ weight: "", reps: "", formRating: "", dropSet: false }],
+        sets: [{ weight: "", reps: "", formRating: 1, dropSet: false }],
       },
     ],
   };
@@ -46,7 +48,7 @@ function StartWorkout() {
 
       exercise.sets = [
         ...exercise.sets,
-        { weight: "", reps: "", formRating: "", dropSet: false },
+        { weight: "", reps: "", formRating: 1, dropSet: false },
       ];
       newData[currentExerciseIndex] = exercise;
 
@@ -61,6 +63,30 @@ function StartWorkout() {
   const handlePrev = () => {
     if (currentExerciseIndex > 0)
       setCurrentExerciseIndex(currentExerciseIndex - 1);
+  };
+
+  const handleFinish = async () => {
+    console.log(exercise);
+
+    const completedExercise = exercise.map(ex => ({
+      exerciseTemplateName: ex.exerciseTemplateName,
+      sets: ex.sets.map(s => ({
+        weight: parseFloat(s.weight),
+        reps: parseFloat(s.reps),
+        formRating: parseInt(s.formRating),
+        dropSet: s.dropSet ?? false,
+      })),
+    }));
+
+    console.log("Data to send:", {
+      workoutId: workout.id,
+      completedExercise,
+    });
+
+    setExercise(workout.exercises);
+    navigate("/dashboard");
+
+    //* This is where the data should be sent off to the API!! currently everything is being mocked
   };
 
   return (
@@ -107,10 +133,16 @@ function StartWorkout() {
                 <input
                   className="w-20 border rounded px-3 py-2"
                   type="number"
+                  min={1}
+                  max={10}
                   value={s.formRating}
-                  onChange={e =>
-                    handleSetChange(i, "formRating", e.target.value)
-                  }
+                  onChange={e => {
+                    const value = Math.max(
+                      1,
+                      Math.min(10, Number(e.target.value))
+                    );
+                    handleSetChange(i, "formRating", value);
+                  }}
                 />
               </div>
               <div className="flex items-center gap-6">
@@ -143,7 +175,10 @@ function StartWorkout() {
               </button>
 
               {currentExerciseIndex === exercise.length - 1 ? (
-                <button className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300">
+                <button
+                  className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                  onClick={handleFinish}
+                >
                   Finish
                 </button>
               ) : (

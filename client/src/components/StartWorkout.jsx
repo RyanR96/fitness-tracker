@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ConfirmFinishModal from "./ConfirmFinishModal";
 
 function StartWorkout() {
   const navigate = useNavigate();
@@ -17,6 +18,8 @@ function StartWorkout() {
       },
     ],
   };
+
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [exercise, setExercise] = useState(workout.exercises);
@@ -88,6 +91,8 @@ function StartWorkout() {
 
     //* This is where the data should be sent off to the API!! currently everything is being mocked
   };
+
+  const confirmFinish = () => setIsConfirmOpen(true);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col">
@@ -177,7 +182,7 @@ function StartWorkout() {
               {currentExerciseIndex === exercise.length - 1 ? (
                 <button
                   className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
-                  onClick={handleFinish}
+                  onClick={confirmFinish}
                 >
                   Finish
                 </button>
@@ -193,6 +198,11 @@ function StartWorkout() {
           </div>
         </div>
       </div>
+      <ConfirmFinishModal
+        isOpen={isConfirmOpen}
+        onConfirm={handleFinish}
+        onCancel={() => setIsConfirmOpen(false)}
+      />
     </div>
   );
 }

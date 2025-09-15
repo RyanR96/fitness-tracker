@@ -1,12 +1,26 @@
 import { useState } from "react";
 import CreateWorkoutModal from "./CreateWorkoutModal";
 import StartWorkoutModal from "./StartWorkoutModal";
+import WorkoutHistoryModal from "./WorkoutHistoryModal";
 
 function Dashboard() {
+  const mockWorkouts = [
+    { id: 1, name: "Push Day" },
+    { id: 2, name: "Pull Day" },
+    { id: 3, name: "Leg Day" },
+  ];
+
+  const mockCompletedWorkouts = [
+    { id: 101, workoutId: 1, workout: mockWorkouts[0], date: "2025-09-10" },
+    { id: 102, workoutId: 2, workout: mockWorkouts[1], date: "2025-09-11" },
+    { id: 103, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
+  ];
   const [isCreateWorkoutModalOpen, setIsCreateWorkoutModalOpen] =
     useState(false);
 
   const [isStartWorkoutModalOpen, setIsStartWorkoutModalOpen] = useState(false);
+
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -57,7 +71,10 @@ function Dashboard() {
             <p className="text-sm text-gray-400 mb-4">
               Check your previous completed workouts
             </p>
-            <button className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300">
+            <button
+              className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+              onClick={() => setIsHistoryOpen(true)}
+            >
               Workout history
             </button>
           </div>
@@ -81,6 +98,12 @@ function Dashboard() {
       <StartWorkoutModal
         isOpen={isStartWorkoutModalOpen}
         onClose={() => setIsStartWorkoutModalOpen(false)}
+      />
+      <WorkoutHistoryModal
+        isOpen={isHistoryOpen}
+        workouts={mockWorkouts}
+        completedWorkouts={mockCompletedWorkouts}
+        onClose={() => setIsHistoryOpen(false)}
       />
     </div>
   );

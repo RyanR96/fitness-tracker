@@ -21,7 +21,26 @@ function WorkoutHistoryModal(props) {
             <h2 className="text-xl font-semibold mb-4 text-center">
               Filter by workout
             </h2>
-            <p>Test</p>
+            {workouts.length === 0 ? (
+              <p>No workouts to filter from</p>
+            ) : (
+              <ul className="space-y-2">
+                {workouts.map(workout => (
+                  <li key={workout.id}>
+                    <button
+                      onClick={() => setSelectedWorkout(workout)}
+                      className={`w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${
+                        selectedWorkout?.id === workout.id
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-100 hover:bg-gray-200"
+                      }`}
+                    >
+                      {workout.name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/**Right side of the column */}
@@ -29,10 +48,17 @@ function WorkoutHistoryModal(props) {
             <h2 className="text-xl font-semibold mb-4 text-center">
               Workout history
             </h2>
-            <p>
-              Want this to be wider
-              araaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaea
-            </p>
+            {selectedWorkout ? (
+              <ul className="space-y-2 max-h-64 overflow-y-auto">
+                {selectedWorkout.map(ex => (
+                  <li className="p-2 bg-gray-100 rounded-md shadow-sm"></li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-500">
+                Select a workout to see it's exercises
+              </p>
+            )}
           </div>
         </div>
         <div className="mt-6 flex justify-between gap-4">

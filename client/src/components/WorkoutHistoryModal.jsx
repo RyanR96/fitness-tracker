@@ -50,9 +50,20 @@ function WorkoutHistoryModal(props) {
             </h2>
             {selectedWorkout ? (
               <ul className="space-y-2 max-h-64 overflow-y-auto">
-                {selectedWorkout.map(ex => (
-                  <li className="p-2 bg-gray-100 rounded-md shadow-sm"></li>
-                ))}
+                {completedWorkouts
+                  .filter(cw => cw.workout.id === selectedWorkout.id)
+                  .map(cw => (
+                    <li
+                      key={cw.id}
+                      className="p-2 bg-gray-100 rounded-md shadow-sm"
+                      onClick={() =>
+                        console.log("clicked workout history", cw.id)
+                      }
+                    >
+                      {cw.workout.name} -{" "}
+                      {new Date(cw.date).toLocaleDateString()}
+                    </li>
+                  ))}
               </ul>
             ) : (
               <p className="text-gray-500">

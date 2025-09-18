@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import StartWorkout from "./components/StartWorkout";
+import CompletedWorkoutHistory from "./components/CompletedWorkoutHistory";
 
 function App() {
   return (
@@ -26,6 +27,15 @@ function App() {
           element={
             <ProtectedRoute>
               <StartWorkout />
+            </ProtectedRoute>
+          }
+        ></Route>
+
+        <Route
+          path="/completedWorkout/:id"
+          element={
+            <ProtectedRoute>
+              <CompletedWorkoutHistory />
             </ProtectedRoute>
           }
         ></Route>

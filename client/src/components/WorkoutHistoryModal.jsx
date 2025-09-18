@@ -6,6 +6,8 @@ function WorkoutHistoryModal(props) {
 
   const navigate = useNavigate();
   const [selectedWorkout, setSelectedWorkout] = useState(null);
+  const [selectedCompletedWorkout, setSelectedCompletedWorkout] =
+    useState(null);
 
   const handleWorkoutClick = workout => {
     if (selectedWorkout?.id === workout.id) {
@@ -63,10 +65,12 @@ function WorkoutHistoryModal(props) {
                   .map(cw => (
                     <li
                       key={cw.id}
-                      className="p-2 bg-gray-100 rounded-md shadow-sm"
-                      onClick={() =>
-                        console.log("clicked workout history", cw.id)
-                      }
+                      className={`w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${
+                        selectedCompletedWorkout?.id === cw.id
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-100 hover:bg-gray-200"
+                      }`}
+                      onClick={() => setSelectedCompletedWorkout(cw)}
                     >
                       {cw.workout.name} -{" "}
                       {new Date(cw.date).toLocaleDateString()}
@@ -78,10 +82,14 @@ function WorkoutHistoryModal(props) {
                 {completedWorkouts.map(cw => (
                   <li
                     key={cw.id}
-                    className="p-2 bg-gray-100 rounded-md shadow-sm"
-                    onClick={() =>
-                      console.log("clicked workout history", cw.id)
-                    }
+                    className={`w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${
+                      selectedCompletedWorkout?.id === cw.id
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-100 hover:bg-gray-200"
+                    }`}
+                    onClick={() => {
+                      setSelectedCompletedWorkout(cw), console.log(cw);
+                    }}
                   >
                     {" "}
                     {cw.workout.name} - {new Date(cw.date).toLocaleDateString()}
@@ -96,7 +104,16 @@ function WorkoutHistoryModal(props) {
           </div>
         </div>
         <div className="mt-6 flex justify-between gap-4">
-          <button className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300">
+          <button
+            className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+            onClick={() => {
+              if (selectedCompletedWorkout) {
+                navigate(`/completedWorkout/${selectedCompletedWorkout}`, {
+                  state: { workout: selectedCompletedWorkout },
+                });
+              }
+            }}
+          >
             View
           </button>
 

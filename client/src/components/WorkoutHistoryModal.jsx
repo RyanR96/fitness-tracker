@@ -7,15 +7,23 @@ function WorkoutHistoryModal(props) {
   const navigate = useNavigate();
   const [selectedWorkout, setSelectedWorkout] = useState(null);
 
+  const handleWorkoutClick = workout => {
+    if (selectedWorkout?.id === workout.id) {
+      setSelectedWorkout(null);
+    } else {
+      setSelectedWorkout(workout);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 border-2 border-dashed border-red-500">
-      <div className="bg-white p-6 rounded shadow-lg max-w-[50%] border-2 border-dashed border-blue-500">
+      <div className="bg-white p-6 rounded shadow-lg lg:max-w-[50%] border-2 border-dashed border-blue-500">
         <h2 className="text-xl font-semibold mb-4 text-center">
           View workout history
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:h-[40vh]">
           {/**Left side of the column */}
           <div className="border p-4 rounded overflow-auto col-span-1">
             <h2 className="text-xl font-semibold mb-4 text-center">
@@ -28,7 +36,7 @@ function WorkoutHistoryModal(props) {
                 {workouts.map(workout => (
                   <li key={workout.id}>
                     <button
-                      onClick={() => setSelectedWorkout(workout)}
+                      onClick={() => handleWorkoutClick(workout)}
                       className={`w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${
                         selectedWorkout?.id === workout.id
                           ? "bg-blue-500 text-white"
@@ -44,8 +52,8 @@ function WorkoutHistoryModal(props) {
           </div>
 
           {/**Right side of the column */}
-          <div className="border p-4 rounded overflow-auto col-span-2">
-            <h2 className="text-xl font-semibold mb-4 text-center">
+          <div className="border p-4 rounded overflow-hidden col-span-2">
+            <h2 className="text-xl font-semibold mb-4 text-center ">
               Workout history
             </h2>
             {selectedWorkout ? (
@@ -65,9 +73,24 @@ function WorkoutHistoryModal(props) {
                     </li>
                   ))}
               </ul>
+            ) : completedWorkouts && completedWorkouts.length > 0 ? (
+              <ul className="space-y-2 max-h-64 overflow-y-auto">
+                {completedWorkouts.map(cw => (
+                  <li
+                    key={cw.id}
+                    className="p-2 bg-gray-100 rounded-md shadow-sm"
+                    onClick={() =>
+                      console.log("clicked workout history", cw.id)
+                    }
+                  >
+                    {" "}
+                    {cw.workout.name} - {new Date(cw.date).toLocaleDateString()}
+                  </li>
+                ))}
+              </ul>
             ) : (
               <p className="text-gray-500">
-                Select a workout to see it's exercises
+                Complete a workout for it to appear here!
               </p>
             )}
           </div>

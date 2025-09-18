@@ -14,6 +14,15 @@ function Dashboard() {
     { id: 101, workoutId: 1, workout: mockWorkouts[0], date: "2025-09-10" },
     { id: 102, workoutId: 2, workout: mockWorkouts[1], date: "2025-09-11" },
     { id: 103, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
+    { id: 104, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
+    { id: 105, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
+    { id: 106, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
+    { id: 107, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
+    { id: 108, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
+    { id: 109, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
+    { id: 199, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
+    { id: 166, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
+    { id: 155, workoutId: 2, workout: mockWorkouts[2], date: "2025-09-8" },
   ];
   const [isCreateWorkoutModalOpen, setIsCreateWorkoutModalOpen] =
     useState(false);

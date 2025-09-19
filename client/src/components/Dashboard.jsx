@@ -11,7 +11,30 @@ function Dashboard() {
   ];
 
   const mockCompletedWorkouts = [
-    { id: 101, workoutId: 1, workout: mockWorkouts[0], date: "2025-09-10" },
+    {
+      id: 101,
+      workoutId: 1,
+      workout: mockWorkouts[0],
+      date: "2025-09-10",
+      exercises: [
+        {
+          id: 1,
+          exerciseTemplateName: "Bench Press",
+          sets: [
+            { Weight: 75, reps: 5, formRating: 10, dropSet: false },
+            { Weight: 75, reps: 4, formRating: 9, dropSet: true },
+          ],
+        },
+        {
+          id: 2,
+          exerciseTemplateName: "Overhead Press",
+          sets: [
+            { Weight: 55, reps: 6, formRating: 10, dropSet: false },
+            { Weight: 55, reps: 4, formRating: 9, dropSet: false },
+          ],
+        },
+      ],
+    },
     { id: 102, workoutId: 2, workout: mockWorkouts[1], date: "2025-09-11" },
     { id: 103, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
     { id: 104, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },

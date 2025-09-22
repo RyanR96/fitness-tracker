@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CreateWorkoutModal from "./CreateWorkoutModal";
 import StartWorkoutModal from "./StartWorkoutModal";
 import WorkoutHistoryModal from "./WorkoutHistoryModal";
+import TrackWeight from "./TrackWeight";
 
 function Dashboard() {
+  const navigate = useNavigate();
   const mockWorkouts = [
     { id: 1, name: "Push Day" },
     { id: 2, name: "Pull Day" },
@@ -117,7 +120,10 @@ function Dashboard() {
             <p className="text-sm text-gray-400 mb-4">
               Track your own weight in chart form
             </p>
-            <button className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300">
+            <button
+              className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+              onClick={() => navigate("/trackWeight")}
+            >
               Track weight
             </button>
           </div>

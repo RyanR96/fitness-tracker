@@ -17,6 +17,25 @@ function TrackWeight() {
     { date: new Date("2025-09-15").getTime(), weight: 71 },
   ]);
 
+  const [newDate, setNewData] = useState("");
+  const [newWeight, setNewWeight] = useState("");
+
+  const handleEntry = () => {
+    if (!newDate || !newWeight) return;
+
+    const newEntry = {
+      date: new Date(newDate).getTime(),
+      weight: parseFloat(newWeight),
+    };
+
+    const updatedData = [...weightData, newEntry].sort(
+      (a, b) => a.date - b.date
+    );
+    setWeightData(updatedData);
+    setNewData("");
+    setNewWeight("");
+  };
+
   return (
     <div className="max-w-4x1 mx-auto p-6 ">
       <h1 className="text-2x1 font-bold mb-6 text-center">Track weight</h1>
@@ -67,15 +86,21 @@ function TrackWeight() {
           <input
             type="date"
             className="border px-3 py-2 rounded w-full md:w-auto"
-            onChange={e => console.log(e.target.value)}
+            value={newDate}
+            onChange={e => setNewData(e.target.value)}
           />
           <input
             type="number"
             placeholder="Weight(KG)"
+            value={newWeight}
             className="border px-3 py-2 rounded w-full md:w-auto"
+            onChange={e => setNewWeight(e.target.value)}
           />
 
-          <button className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 md:col-span-2 justify-self-center">
+          <button
+            className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 md:col-span-2 justify-self-center"
+            onClick={handleEntry}
+          >
             Add weight
           </button>
         </div>

@@ -7,6 +7,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import StartWorkout from "./components/StartWorkout";
 import CompletedWorkoutHistory from "./components/CompletedWorkoutHistory";
 import TrackWeight from "./components/TrackWeight";
+import Navbar from "./components/Navbar";
+import Layout from "./components/Layout";
 
 function App() {
   return (
@@ -14,40 +16,43 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        ></Route>
 
-        <Route
-          path="/workout/:id"
-          element={
-            <ProtectedRoute>
-              <StartWorkout />
-            </ProtectedRoute>
-          }
-        ></Route>
+        <Route element={<Layout />}>
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          ></Route>
 
-        <Route
-          path="/completedWorkout/:id"
-          element={
-            <ProtectedRoute>
-              <CompletedWorkoutHistory />
-            </ProtectedRoute>
-          }
-        ></Route>
-        <Route
-          path="/trackWeight"
-          element={
-            <ProtectedRoute>
-              <TrackWeight />
-            </ProtectedRoute>
-          }
-        ></Route>
+          <Route
+            path="/workout/:id"
+            element={
+              <ProtectedRoute>
+                <StartWorkout />
+              </ProtectedRoute>
+            }
+          ></Route>
+
+          <Route
+            path="/completedWorkout/:id"
+            element={
+              <ProtectedRoute>
+                <CompletedWorkoutHistory />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/trackWeight"
+            element={
+              <ProtectedRoute>
+                <TrackWeight />
+              </ProtectedRoute>
+            }
+          ></Route>
+        </Route>
       </Routes>
     </div>
   );

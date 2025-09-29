@@ -30,22 +30,42 @@ function Login() {
   };
 
   return (
-    <div className="loginPage">
-      <h1>Login Page</h1>
-      <form onSubmit={handlesubmit}>
-        <input
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-          placeholder="Username"
-        ></input>
-        <input
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          placeholder="Password"
-        ></input>
-        <button type="submit">Login</button>
-      </form>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4">
+      <div className="bg-white rounded-3xl shadow-xl w-full max-w-4xl grid grid-cols-1 md:grid-cols-2">
+        <div className="p-12 md:p-28 flex flex-col justify-center">
+          <h1 className="text-3xl font-bold mb-6 text-center">Login Page</h1>
+          <form className="space-y-4 text-center" onSubmit={handlesubmit}>
+            <input
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              placeholder="Username"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
+            ></input>
+            <input
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="Password"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
+            ></input>
+            <button
+              className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 w-full"
+              type="submit"
+            >
+              Login
+            </button>
+          </form>
+          <button className="mt-4 text-sm text-gray-500 hover:underline self-start">
+            Create Account
+          </button>
+        </div>
+        <div className="hidden md:block">
+          <img
+            className=" w-full h-full object-cover rounded-lg"
+            src="https://cdn.pixabay.com/photo/2016/01/08/01/53/gymer-1126999_960_720.jpg"
+          ></img>
+        </div>
+      </div>
     </div>
   );
 }

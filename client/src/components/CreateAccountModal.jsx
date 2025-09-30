@@ -1,0 +1,62 @@
+import { useState } from "react";
+
+function CreateAccountModal(props) {
+  const { isOpen, onClose } = props;
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleSubmit = () => {};
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="relative bg-white p-6 rounded-2xl shadow-lg h-[50%]">
+        <button
+          onClick={onClose}
+          className="absolute top-0 right-0 mt-2 mr-2 text-lg text-gray-500 hover:text-gray-800 "
+        >
+          X
+        </button>
+        <h2 className="text-xl font-semibold mb-4 text-center">
+          {" "}
+          Create Account:
+        </h2>
+        <form
+          className="flex flex-col justify-evenly h-full"
+          onSubmit={handleSubmit}
+        >
+          <input
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            placeholder="Username"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
+          ></input>
+          <input
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            placeholder="Password"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
+          ></input>
+          <input
+            type="password"
+            value={confirmPassword}
+            onChange={e => setConfirmPassword(e.target.value)}
+            placeholder="Confirm Password"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
+          ></input>
+          <button
+            className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 w-full"
+            type="submit"
+          >
+            Sign up
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default CreateAccountModal;

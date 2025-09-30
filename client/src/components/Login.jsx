@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CreateAccountModal from "./CreateAccountModal";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handlesubmit = async e => {
     e.preventDefault();
@@ -55,7 +58,10 @@ function Login() {
               Login
             </button>
           </form>
-          <button className="mt-4 text-sm text-gray-500 hover:underline self-start">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="mt-4 text-sm text-gray-500 hover:underline self-start"
+          >
             Create Account
           </button>
         </div>
@@ -66,6 +72,10 @@ function Login() {
           ></img>
         </div>
       </div>
+      <CreateAccountModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }

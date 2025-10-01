@@ -6,7 +6,29 @@ function CreateAccountModal(props) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = () => {};
+  const [errors, setErrors] = useState({});
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    let newErrors = {};
+
+    if (!username) newErrors.username = "Username is required";
+    if (!password) newErrors.password = "Password is required";
+    if (password !== confirmPassword)
+      newErrors.confirmPassword = "Passwords do not match";
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      console.log("Signed up with:", { username, password });
+
+      onClose();
+      setUsername("");
+      setPassword("");
+      setConfirmPassword("");
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -27,26 +49,42 @@ function CreateAccountModal(props) {
           className="flex flex-col justify-evenly h-full"
           onSubmit={handleSubmit}
         >
-          <input
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-            placeholder="Username"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
-          ></input>
-          <input
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            placeholder="Password"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
-          ></input>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={e => setConfirmPassword(e.target.value)}
-            placeholder="Confirm Password"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
-          ></input>
+          <div className="">
+            <input
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              placeholder="Username"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
+            ></input>
+
+            <p className="text-red-500 text-sm mt-1 h-2">
+              {errors.username || " "}
+            </p>
+          </div>
+          <div>
+            <input
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="Password"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
+            ></input>
+            <p className="text-red-500 text-sm mt-1 h-2">
+              {errors.password || " "}
+            </p>
+          </div>
+          <div>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
+              placeholder="Confirm Password"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
+            ></input>
+            <p className="text-red-500 text-sm mt-1 h-2">
+              {errors.confirmPassword || " "}
+            </p>
+          </div>
           <button
             className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 w-full"
             type="submit"

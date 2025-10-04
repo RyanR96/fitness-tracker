@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 function StartWorkoutModal(props) {
   const { isOpen, onClose } = props;
@@ -20,7 +21,7 @@ function StartWorkoutModal(props) {
     ]);
   }, []);
 
-  if (!isOpen) return null;
+  //if (!isOpen) return null;
 
   const handleClose = () => {
     onClose();
@@ -34,76 +35,95 @@ function StartWorkoutModal(props) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded shadow-lg max-w-lg w-full">
-        <h2 className="text-xl font-semibold mb-4 text-center">
-          Start Workout
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/**Left side of the column */}
-          <div className="border p-4 rounded overflow-auto">
-            <h2 className="text-xl font-semibold mb-4 text-center">
-              Select Workout
-            </h2>
-            {workouts.length === 0 ? (
-              <p>No workouts created, please create a workout</p>
-            ) : (
-              <ul className="space-y-2">
-                {workouts.map(workout => (
-                  <li key={workout.id}>
-                    <button
-                      onClick={() => setSelectedWorkout(workout)}
-                      className={`w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${
-                        selectedWorkout?.id === workout.id
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-100 hover:bg-gray-200"
-                      }`}
-                    >
-                      {workout.name}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          {/**Right side of the column */}
-          <div className="border p-4 rounded overflow-auto">
-            <h2 className="text-xl font-semibold mb-4 text-center">
-              Exercises
-            </h2>
-            {selectedWorkout ? (
-              <ul className="space-y-2 max-h-64 overflow-y-auto">
-                {selectedWorkout.exercises.map(ex => (
-                  <li key={ex} className="p-2 bg-gray-100 rounded-md shadow-sm">
-                    {ex}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-500">
-                Select a workout to see it's exercises
-              </p>
-            )}
-          </div>
-        </div>
-        <div className="mt-6 flex justify-between gap-4">
-          <button
-            className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
-            onClick={handleStart}
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.1 }}
+        >
+          <motion.div
+            className="bg-white p-6 rounded shadow-lg max-w-lg w-full"
+            initial={{ y: 50 }}
+            animate={{ y: 0 }}
+            exit={{ y: 50 }}
+            transition={{ duration: 0.4 }}
           >
-            Start Workout
-          </button>
+            <h2 className="text-xl font-semibold mb-4 text-center">
+              Start Workout
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/**Left side of the column */}
+              <div className="border p-4 rounded overflow-auto">
+                <h2 className="text-xl font-semibold mb-4 text-center">
+                  Select Workout
+                </h2>
+                {workouts.length === 0 ? (
+                  <p>No workouts created, please create a workout</p>
+                ) : (
+                  <ul className="space-y-2">
+                    {workouts.map(workout => (
+                      <li key={workout.id}>
+                        <button
+                          onClick={() => setSelectedWorkout(workout)}
+                          className={`w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${
+                            selectedWorkout?.id === workout.id
+                              ? "bg-blue-500 text-white"
+                              : "bg-gray-100 hover:bg-gray-200"
+                          }`}
+                        >
+                          {workout.name}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
 
-          <button
-            className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
-            onClick={handleClose}
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
+              {/**Right side of the column */}
+              <div className="border p-4 rounded overflow-auto">
+                <h2 className="text-xl font-semibold mb-4 text-center">
+                  Exercises
+                </h2>
+                {selectedWorkout ? (
+                  <ul className="space-y-2 max-h-64 overflow-y-auto">
+                    {selectedWorkout.exercises.map(ex => (
+                      <li
+                        key={ex}
+                        className="p-2 bg-gray-100 rounded-md shadow-sm"
+                      >
+                        {ex}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-gray-500">
+                    Select a workout to see it's exercises
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="mt-6 flex justify-between gap-4">
+              <button
+                className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                onClick={handleStart}
+              >
+                Start Workout
+              </button>
+
+              <button
+                className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                onClick={handleClose}
+              >
+                Close
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 

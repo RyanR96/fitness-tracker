@@ -42,7 +42,7 @@ function CreateAccountModal(props) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.1 }}
         >
           <motion.div
             className="relative bg-white p-6 rounded-2xl shadow-lg h-[50%]"

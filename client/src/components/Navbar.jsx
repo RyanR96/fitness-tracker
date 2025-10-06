@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
   return (
     <nav className="flex justify-between items-center bg-black text-white shadow p-4">
       <h1 className="text-xl font-bold">MyFitnessApp</h1>
@@ -15,7 +22,10 @@ function Navbar() {
         </Link>
       </div>
 
-      <button className=" hidden sm:flex bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 md:col-span-2 justify-self-center">
+      <button
+        className=" hidden sm:flex bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 md:col-span-2 justify-self-center"
+        onClick={handleLogout}
+      >
         Logout
       </button>
 
@@ -50,7 +60,10 @@ function Navbar() {
             <li>
               <button
                 className="hover:underline block hover:bg-gray-700 p-4 w-full"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => {
+                  setIsOpen(!isOpen);
+                  handleLogout();
+                }}
               >
                 Logout
               </button>

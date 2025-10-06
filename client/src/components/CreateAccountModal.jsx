@@ -10,7 +10,7 @@ function CreateAccountModal(props) {
 
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     let newErrors = {};
@@ -22,6 +22,11 @@ function CreateAccountModal(props) {
 
     setErrors(newErrors);
 
+    if (Object.keys(newErrors).length > 0) {
+      console.log("Hit the form validation error ");
+      return;
+    }
+    /**  previous mocked code
     if (Object.keys(newErrors).length === 0) {
       console.log("Signed up with:", { username, password });
 
@@ -29,6 +34,30 @@ function CreateAccountModal(props) {
       setUsername("");
       setPassword("");
       setConfirmPassword("");
+    }
+*/
+    try {
+      const res = await fetch("http://localhost:3000/auth/signup", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrors({ api: data.message || "Error when logging in" });
+        return;
+      }
+
+      //succesful code goes here
+      onClose();
+      setUsername("");
+      setPassword("");
+      setConfirmPassword("");
+    } catch (err) {
+      console.error("Failed", err);
+      setErrors({ api: "Error, please try again later" });
     }
   };
 
@@ -98,7 +127,7 @@ function CreateAccountModal(props) {
                   className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
                 ></input>
                 <p className="text-red-500 text-sm mt-1 h-2">
-                  {errors.confirmPassword || " "}
+                  {errors.confirmPassword || " "} {errors.api || ""}
                 </p>
               </div>
               <button

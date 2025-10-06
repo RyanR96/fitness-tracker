@@ -7,10 +7,13 @@ function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const [loginError, setLoginError] = useState("");
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handlesubmit = async e => {
     e.preventDefault();
+    setLoginError("");
 
     try {
       const res = await fetch("http://localhost:3000/auth/login", {
@@ -19,16 +22,17 @@ function Login() {
         body: JSON.stringify({ username, password }),
       });
 
-      if (!res.ok) {
-        throw new Error("Error when logging in");
-      }
-
       const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Error when logging in");
+      }
       console.log(data);
       localStorage.setItem("token", data.token);
       navigate("/dashboard");
     } catch (err) {
       console.error("Fetch failed", err);
+      setLoginError(err.message);
     }
   };
 
@@ -58,12 +62,16 @@ function Login() {
               Login
             </button>
           </form>
+
           <button
             onClick={() => setIsModalOpen(true)}
             className="mt-4 text-sm text-gray-500 hover:underline self-start"
           >
             Create Account
           </button>
+          {loginError && (
+            <p className="mt-4 text-sm text-red-500">{loginError}</p>
+          )}
         </div>
         <div className="hidden md:block">
           <img

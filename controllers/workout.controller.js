@@ -1,5 +1,18 @@
 const prisma = require("../client");
 
+/** This one should probably be in it's seperate controller.... */
+const getAllExercises = async (req, res) => {
+  try {
+    const exercises = await prisma.exerciseTemplate.findMany({
+      select: { id: true, name: true },
+    });
+    res.json(exercises);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to get exercises", message: err });
+  }
+};
+
 const getAllWorkouts = async (req, res) => {
   try {
     const workouts = await prisma.workout.findMany({
@@ -144,6 +157,7 @@ const deleteWorkout = async (req, res) => {
 };
 
 module.exports = {
+  getAllExercises,
   getAllWorkouts,
   getWorkoutById,
   createWorkout,

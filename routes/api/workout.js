@@ -5,6 +5,9 @@ const workoutController = require("../../controllers/workout.controller");
 
 const router = express.Router();
 
+// Should be in it's own file... but it's only one!
+router.get("/exerciseName", verifyToken, workoutController.getAllExercises);
+
 router.get("/", verifyToken, workoutController.getAllWorkouts);
 
 router.get("/:id", verifyToken, workoutController.getWorkoutById);

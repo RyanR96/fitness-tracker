@@ -5,10 +5,34 @@ function CreateWorkoutModal(props) {
   const { isOpen, onClose } = props;
   const [allExercises, setAllExercises] = useState([]);
   const [selectedExercise, setSelectedExercise] = useState([]);
-  const [workoutName, setWorkoutName] = useState("Enter workout name");
+  const [workoutName, setWorkoutName] = useState("");
 
   useEffect(() => {
-    setAllExercises(["Bench Press", "Overhead Press", "Push ups"]);
+    //setAllExercises(["Bench Press", "Overhead Press", "Push ups"]);
+
+    const fetchExercises = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch(
+          "http://localhost:3000/api/workouts/exerciseName",
+          {
+            method: "GET",
+            headers: { Authorization: `bearer ${token}` },
+          }
+        );
+
+        if (!res.ok) throw new Error("failed to get exercises");
+
+        const data = await res.json();
+        console.log("data is :", data);
+        setAllExercises(data);
+        console.log("All exercises state is:", allExercises);
+      } catch (err) {
+        console.error("Error fetching exercises", err);
+        //maybe set a state with the message and render it?
+      }
+    };
+    fetchExercises();
   }, []);
 
   //if (!isOpen) return null;
@@ -28,8 +52,13 @@ function CreateWorkoutModal(props) {
       alert("Please select at least one exercise");
       return;
     }
-    console.log("Create working:", workoutName, selectedExercise);
-    setWorkoutName("Enter workout name");
+
+    if (workoutName.length <= 0) {
+      alert("Please enter a workout name");
+      return;
+    }
+    console.log("Create workout:", workoutName, selectedExercise);
+    setWorkoutName("");
     setSelectedExercise([]);
     onClose();
   };
@@ -58,6 +87,7 @@ function CreateWorkoutModal(props) {
               {/**Left side of the column */}
               <div className="border p-4 rounded overflow-auto">
                 <input
+                  placeholder="Enter workout name"
                   type="text"
                   value={workoutName}
                   onChange={e => setWorkoutName(e.target.value)}
@@ -69,10 +99,10 @@ function CreateWorkoutModal(props) {
                   <ul>
                     {selectedExercise.map(ex => (
                       <li
-                        key={ex}
+                        key={ex.id}
                         className="flex justify-between items-center py-1"
                       >
-                        {ex}
+                        {ex.name}
                         <button
                           className="text-red-500 hover:text-red-700"
                           onClick={() => removeExercise(ex)}
@@ -94,10 +124,10 @@ function CreateWorkoutModal(props) {
                   {allExercises.map(ex => (
                     <li
                       className="cursor-pointer py-1 hover:bg-gray-100 rounded px-2"
-                      key={ex}
+                      key={ex.id}
                       onClick={() => addExercise(ex)}
                     >
-                      {ex}
+                      {ex.name}
                     </li>
                   ))}
                 </ul>

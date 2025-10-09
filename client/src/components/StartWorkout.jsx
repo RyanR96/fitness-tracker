@@ -202,6 +202,9 @@ function StartWorkout() {
         isOpen={isConfirmOpen}
         onConfirm={handleFinish}
         onCancel={() => setIsConfirmOpen(false)}
+        title="Finish Workout?"
+        message="Are you sure you want to finish the workout? You won't be able to edit it."
+        action="Finish"
       />
     </div>
   );

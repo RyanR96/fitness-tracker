@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import ConfirmFinishModal from "./ConfirmFinishModal";
 
 function StartWorkoutModal(props) {
   const { isOpen, onClose } = props;
@@ -8,6 +9,7 @@ function StartWorkoutModal(props) {
 
   const [workouts, setWorkouts] = useState([]);
   const [selectedWorkout, setSelectedWorkout] = useState(null);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   useEffect(() => {
     if (!isOpen) return; // Prevent needless fetch when close
@@ -60,6 +62,11 @@ function StartWorkoutModal(props) {
     if (!selectedWorkout) return alert("Please select a workout");
     navigate(`/workout/${selectedWorkout.id}`);
     onClose();
+  };
+
+  const handleDelete = () => {
+    alert("Placeholder");
+    console.log(selectedWorkout);
   };
 
   return (
@@ -143,12 +150,27 @@ function StartWorkoutModal(props) {
 
               <button
                 className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                onClick={() => setIsConfirmOpen(true)}
+              >
+                Delete Workout
+              </button>
+
+              <button
+                className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
                 onClick={handleClose}
               >
                 Close
               </button>
             </div>
           </motion.div>
+          <ConfirmFinishModal
+            isOpen={isConfirmOpen}
+            onConfirm={handleDelete}
+            onCancel={() => setIsConfirmOpen(false)}
+            title="Delete workout?"
+            message={`Are you sure you want to delete the workout "${selectedWorkout?.name}"?`}
+            action="Delete"
+          />
         </motion.div>
       )}
     </AnimatePresence>

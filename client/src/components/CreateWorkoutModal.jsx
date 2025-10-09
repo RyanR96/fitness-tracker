@@ -6,6 +6,7 @@ function CreateWorkoutModal(props) {
   const [allExercises, setAllExercises] = useState([]);
   const [selectedExercise, setSelectedExercise] = useState([]);
   const [workoutName, setWorkoutName] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     //setAllExercises(["Bench Press", "Overhead Press", "Push ups"]);
@@ -29,6 +30,7 @@ function CreateWorkoutModal(props) {
         console.log("All exercises state is:", allExercises);
       } catch (err) {
         console.error("Error fetching exercises", err);
+
         //maybe set a state with the message and render it?
       }
     };
@@ -47,7 +49,7 @@ function CreateWorkoutModal(props) {
     setSelectedExercise(selectedExercise.filter(exercise => exercise !== ex));
   };
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     if (selectedExercise.length === 0) {
       alert("Please select at least one exercise");
       return;
@@ -57,10 +59,44 @@ function CreateWorkoutModal(props) {
       alert("Please enter a workout name");
       return;
     }
-    console.log("Create workout:", workoutName, selectedExercise);
-    setWorkoutName("");
-    setSelectedExercise([]);
-    onClose();
+
+    try {
+      const workoutData = {
+        name: workoutName,
+        exerciseTemplateName: selectedExercise.map(ex => ex.name),
+      };
+      console.log(JSON.stringify(workoutData, null, 2));
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://localhost:3000/api/workouts", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: workoutName,
+          exerciseTemplateName: selectedExercise.map(ex => ex.name),
+        }),
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || "Failed to create workout");
+      }
+
+      const data = await res.json();
+      setWorkoutName("");
+      setSelectedExercise([]);
+      onClose();
+      setError("");
+      console.log("Workout created with data:");
+    } catch (err) {
+      console.error("Error creating workout", err.message);
+      setError(err.message);
+
+      console.log(error);
+    }
+
+    //console.log("Create workout:", workoutName, selectedExercise);
   };
 
   return (
@@ -133,6 +169,7 @@ function CreateWorkoutModal(props) {
                 </ul>
               </div>
             </div>
+            <p className="text-red-500 text-sm mt-1 h-2">{error || " "}</p>
             <div className="mt-6 flex justify-between gap-4">
               <button
                 className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"

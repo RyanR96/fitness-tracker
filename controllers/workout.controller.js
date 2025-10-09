@@ -45,6 +45,17 @@ const createWorkout = async (req, res) => {
     return res.status(400).json({ error: "Name and exercises must be listed" });
   }
   try {
+    const existingWorkout = await prisma.workout.findFirst({
+      where: {
+        userId: req.user.id,
+        name: name,
+      },
+    });
+
+    if (existingWorkout)
+      return res.status(400).json({
+        message: "Workout name already exists, please enter a new one",
+      });
     const createdWorkout = await prisma.workout.create({
       data: {
         name,

@@ -10,7 +10,8 @@ function StartWorkoutModal(props) {
   const [selectedWorkout, setSelectedWorkout] = useState(null);
 
   useEffect(() => {
-    setWorkouts([
+    if (!isOpen) return; // Prevent needless fetch when close
+    /**    setWorkouts([
       { id: 1, name: "Push day", exercises: ["Bench press", "overhead Press"] },
       { id: 2, name: "Leg day", exercises: ["Dips", "overhead Press"] },
       {
@@ -18,8 +19,35 @@ function StartWorkoutModal(props) {
         name: "Pull day",
         exercises: ["Tricep", "overhead Press", "test"],
       },
-    ]);
-  }, []);
+    ]); */
+    const fetchWorkouts = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const res = await fetch("http://localhost:3000/api/workouts/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!res.ok) throw new Error("failed to get exercises");
+
+        const data = await res.json();
+
+        console.log(data);
+        const formattedData = data.map(w => ({
+          id: w.id,
+          name: w.name,
+          exercises: w.exercises.map(e => e.exerciseTemplateName),
+        }));
+        console.log(formattedData);
+        setWorkouts(formattedData);
+      } catch (err) {
+        console.error("Error fetching workouts");
+      }
+    };
+
+    fetchWorkouts();
+  }, [isOpen]);
 
   //if (!isOpen) return null;
 

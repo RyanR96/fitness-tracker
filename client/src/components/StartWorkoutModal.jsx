@@ -64,9 +64,29 @@ function StartWorkoutModal(props) {
     onClose();
   };
 
-  const handleDelete = () => {
-    alert("Placeholder");
-    console.log(selectedWorkout);
+  const handleDelete = async () => {
+    //alert("Placeholder");
+    console.log("workout to delete is :", selectedWorkout);
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(
+        `http://localhost:3000/api/workouts/${selectedWorkout.id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `bearer ${token}` },
+        }
+      );
+      if (!res.ok) throw new Error("Failed to delete workout");
+
+      setWorkouts(prev =>
+        prev.filter(workout => workout.id !== selectedWorkout.id)
+      );
+      setSelectedWorkout(null);
+      setIsConfirmOpen(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -168,7 +188,12 @@ function StartWorkoutModal(props) {
             onConfirm={handleDelete}
             onCancel={() => setIsConfirmOpen(false)}
             title="Delete workout?"
-            message={`Are you sure you want to delete the workout "${selectedWorkout?.name}"?`}
+            message={
+              <>
+                Are you sure you want to <strong>permanently </strong>delete the
+                workout <strong>"{selectedWorkout?.name}"? </strong>
+              </>
+            }
             action="Delete"
           />
         </motion.div>

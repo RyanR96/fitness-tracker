@@ -171,6 +171,7 @@ function StartWorkoutModal(props) {
               <button
                 className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
                 onClick={() => setIsConfirmOpen(true)}
+                disabled={!selectedWorkout}
               >
                 Delete Workout
               </button>

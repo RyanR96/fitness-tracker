@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmFinishModal from "./ConfirmFinishModal";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 function StartWorkout() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  /**
+   *
+   */
   const workout = {
     id: 1,
     name: "Push Day",
@@ -18,6 +24,40 @@ function StartWorkout() {
       },
     ],
   };
+
+  useEffect(() => {
+    const fetchWorkout = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch(`http://localhost:3000/api/workouts/${id}`, {
+          headers: {
+            method: "GET",
+            Authorization: `bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error(`Failed to fetch workout, response: ${res.status}`);
+        }
+
+        const data = await res.json();
+        console.log("Pre formatted Data:", data);
+
+        const formattedWorkout = {
+          ...data,
+          exercises: data.exercises.map(exercise => ({
+            ...exercise,
+            sets: [{ weight: "", reps: "", formRating: 1, dropSet: false }],
+          })),
+        };
+        console.log("Post formatted data", formattedWorkout);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    fetchWorkout();
+    console.log("Hmm");
+  });
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 

@@ -7,10 +7,13 @@ import { useEffect } from "react";
 function StartWorkout() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [workout, setWorkout] = useState(null);
+  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
+  const [exercise, setExercise] = useState(null);
+
   /**
-   *
-   */
-  const workout = {
+   *  const workout = {
     id: 1,
     name: "Push Day",
     exercises: [
@@ -24,6 +27,7 @@ function StartWorkout() {
       },
     ],
   };
+   */
 
   useEffect(() => {
     const fetchWorkout = async () => {
@@ -51,19 +55,17 @@ function StartWorkout() {
           })),
         };
         console.log("Post formatted data", formattedWorkout);
+        setWorkout(formattedWorkout);
+        setExercise(formattedWorkout.exercises);
       } catch (err) {
         console.error(err.message);
       }
     };
     fetchWorkout();
     console.log("Hmm");
-  });
+  }, [id]);
 
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-
-  const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-  const [exercise, setExercise] = useState(workout.exercises);
-
+  if (!exercise) return <p>Loading workout</p>;
   const currentExercise = exercise[currentExerciseIndex];
 
   const handleSetChange = (setIndex, field, value) => {
@@ -80,10 +82,10 @@ function StartWorkout() {
       return;
     }
 
-    console.log(exercise);
-    console.log(currentExercise);
-    console.log(currentExerciseIndex);
-    console.log(exercise.length);
+    console.log("exercise", exercise);
+    console.log("current exercise", currentExercise);
+    console.log("current exercise index", currentExerciseIndex);
+    console.log("exercise length", exercise.length);
     setExercise(prev => {
       const newData = [...prev];
 

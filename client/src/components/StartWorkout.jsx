@@ -62,7 +62,6 @@ function StartWorkout() {
       }
     };
     fetchWorkout();
-    console.log("Hmm");
   }, [id]);
 
   if (!exercise) return <p>Loading workout</p>;
@@ -115,23 +114,54 @@ function StartWorkout() {
 
     const completedExercise = exercise.map(ex => ({
       exerciseTemplateName: ex.exerciseTemplateName,
-      sets: ex.sets.map(s => ({
-        weight: parseFloat(s.weight),
-        reps: parseFloat(s.reps),
-        formRating: parseInt(s.formRating),
-        dropSet: s.dropSet ?? false,
-      })),
+      sets: ex.sets
+        .filter(s => s.weight !== "" && s.reps !== "")
+        .map(s => ({
+          weight: parseFloat(s.weight),
+          reps: parseFloat(s.reps),
+          formRating: parseInt(s.formRating),
+          dropSet: s.dropSet ?? false,
+        })),
     }));
+
+    const filteredExercises = completedExercise.filter(
+      ex => ex.sets.length > 0
+    );
+    if (filteredExercises.length === 0) {
+      alert("Please complete any set before finishing!!");
+      return;
+    }
 
     console.log("Data to send:", {
       workoutId: workout.id,
-      completedExercise,
+      completedExercises: filteredExercises,
     });
 
-    setExercise(workout.exercises);
-    navigate("/dashboard");
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://localhost:3000/api/completedWorkouts/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${token}`,
+        },
+        body: JSON.stringify({
+          workoutId: workout.id,
+          completedExercises: filteredExercises,
+        }),
+      });
 
-    //* This is where the data should be sent off to the API!! currently everything is being mocked
+      if (!res.ok) {
+        throw new Error(`Failed to complete workout, response: ${res.status}`);
+      }
+      // can kinda delete this part?
+      const data = await res.json();
+      console.log("Workout saved", data);
+      setExercise(workout.exercises);
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err.message);
+    }
   };
 
   const confirmFinish = () => setIsConfirmOpen(true);

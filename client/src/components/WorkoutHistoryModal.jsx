@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
 
 function WorkoutHistoryModal(props) {
   const { isOpen, workouts, completedWorkouts, onClose } = props;
@@ -17,6 +18,42 @@ function WorkoutHistoryModal(props) {
       setSelectedWorkout(workout);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const [workoutRes, completedRes] = await Promise.all([
+          fetch("http://localhost:3000/api/workouts/", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+          fetch("http://localhost:3000/api/completedWorkouts/", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+        ]);
+
+        if (!workoutRes.ok || !completedRes.ok) {
+          throw new Error(
+            `Failed to fetch data. Workouts: ${workoutRes.status} Completed: ${completedRes.status}`
+          );
+        }
+        const [workoutData, completedData] = await Promise.all([
+          workoutRes.json(),
+          completedRes.json(),
+        ]);
+
+        console.log("Workout data for HistoryModal is:", workoutData);
+        console.log("CW data for HistoryModal is:", completedData);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, [isOpen]);
 
   //if (!isOpen) return null;
 

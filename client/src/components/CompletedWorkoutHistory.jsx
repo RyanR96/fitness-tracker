@@ -1,14 +1,41 @@
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 function CompletedWorkoutHistory() {
-  const location = useLocation();
-
-  const completedWorkout = location.state?.workout;
+  //const location = useLocation(); old way, keeping it in as reminder lol
+  const { id } = useParams();
+  const [completedWorkout, setCompletedWorkouts] = useState(null);
 
   useEffect(() => {
-    console.log(completedWorkout);
-  }, [completedWorkout]);
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch(
+          `http://localhost:3000/api/completedworkouts/${id}`,
+          {
+            headers: {
+              method: "GET",
+              Authorization: `bearer ${token}`,
+            },
+          }
+        );
+
+        if (!res.ok) {
+          throw new Error("Error fetching completed workout");
+        }
+
+        const data = await res.json();
+        console.log("Fetched:", data);
+        setCompletedWorkouts(data);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    fetchData();
+  }, [id]);
+
+  if (!completedWorkout) return <p>Loading workout</p>;
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col">
@@ -25,7 +52,7 @@ function CompletedWorkoutHistory() {
                 {exercise.exerciseTemplateName}:
               </h2>
               <ul className="space-y-1">
-                {exercise.sets.map((set, i) => (
+                {exercise.set.map((set, i) => (
                   <li
                     key={i}
                     className="p-2 bg-gray-100 rounded flex flex-wrap justify-around"
@@ -34,7 +61,7 @@ function CompletedWorkoutHistory() {
                       <strong>Set {i + 1}:</strong>
                     </span>
                     <span className="p-2">
-                      {set.Weight}kg x {set.reps} reps
+                      {set.weight}kg x {set.reps} reps
                     </span>
                     <span className="p-2">Form: {set.formRating}</span>
                     <span className="p-2">

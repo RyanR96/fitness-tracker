@@ -7,49 +7,7 @@ import TrackWeight from "./TrackWeight";
 
 function Dashboard() {
   const navigate = useNavigate();
-  const mockWorkouts = [
-    { id: 1, name: "Push Day" },
-    { id: 2, name: "Pull Day" },
-    { id: 3, name: "Leg Day" },
-  ];
 
-  const mockCompletedWorkouts = [
-    {
-      id: 101,
-      workoutId: 1,
-      workout: mockWorkouts[0],
-      date: "2025-09-10",
-      exercises: [
-        {
-          id: 1,
-          exerciseTemplateName: "Bench Press",
-          sets: [
-            { Weight: 75, reps: 5, formRating: 10, dropSet: false },
-            { Weight: 75, reps: 4, formRating: 9, dropSet: true },
-          ],
-        },
-        {
-          id: 2,
-          exerciseTemplateName: "Overhead Press",
-          sets: [
-            { Weight: 55, reps: 6, formRating: 10, dropSet: false },
-            { Weight: 55, reps: 4, formRating: 9, dropSet: false },
-          ],
-        },
-      ],
-    },
-    { id: 102, workoutId: 2, workout: mockWorkouts[1], date: "2025-09-11" },
-    { id: 103, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
-    { id: 104, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
-    { id: 105, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
-    { id: 106, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
-    { id: 107, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
-    { id: 108, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
-    { id: 109, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
-    { id: 199, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
-    { id: 166, workoutId: 3, workout: mockWorkouts[2], date: "2025-09-8" },
-    { id: 155, workoutId: 2, workout: mockWorkouts[2], date: "2025-09-8" },
-  ];
   const [isCreateWorkoutModalOpen, setIsCreateWorkoutModalOpen] =
     useState(false);
 
@@ -139,8 +97,6 @@ function Dashboard() {
       />
       <WorkoutHistoryModal
         isOpen={isHistoryOpen}
-        workouts={mockWorkouts}
-        completedWorkouts={mockCompletedWorkouts}
         onClose={() => setIsHistoryOpen(false)}
       />
     </div>

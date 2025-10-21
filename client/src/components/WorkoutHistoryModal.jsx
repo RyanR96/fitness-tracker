@@ -4,12 +4,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 
 function WorkoutHistoryModal(props) {
-  const { isOpen, workouts, completedWorkouts, onClose } = props;
+  //const { isOpen, workouts, completedWorkouts, onClose } = props;
+  const { isOpen, onClose } = props;
 
   const navigate = useNavigate();
   const [selectedWorkout, setSelectedWorkout] = useState(null);
   const [selectedCompletedWorkout, setSelectedCompletedWorkout] =
     useState(null);
+  const [workouts, setWorkouts] = useState(null);
+  const [completedWorkouts, setCompletedWorkouts] = useState(null);
 
   const handleWorkoutClick = workout => {
     if (selectedWorkout?.id === workout.id) {
@@ -47,7 +50,9 @@ function WorkoutHistoryModal(props) {
         ]);
 
         console.log("Workout data for HistoryModal is:", workoutData);
+        setWorkouts(workoutData);
         console.log("CW data for HistoryModal is:", completedData);
+        setCompletedWorkouts(completedData);
       } catch (err) {
         console.error(err);
       }
@@ -113,7 +118,9 @@ function WorkoutHistoryModal(props) {
                 {selectedWorkout ? (
                   <ul className="space-y-2 max-h-64 overflow-y-auto">
                     {completedWorkouts
-                      .filter(cw => cw.workout.id === selectedWorkout.id)
+                      .filter(
+                        cw => cw.workout && cw.workout.id === selectedWorkout.id
+                      )
                       .map(cw => (
                         <li
                           key={cw.id}
@@ -144,7 +151,8 @@ function WorkoutHistoryModal(props) {
                         }}
                       >
                         {" "}
-                        {cw.workout.name} -{" "}
+                        {/** Can add cw.workoutName if I decide to do a snapshot later on */}
+                        {cw.workout ? cw.workout.name : "Deleted Workout"} -{" "}
                         {new Date(cw.date).toLocaleDateString()}
                       </li>
                     ))}

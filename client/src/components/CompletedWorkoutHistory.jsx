@@ -43,7 +43,9 @@ function CompletedWorkoutHistory() {
       <div className="flex-1 flex flex-col md:flex-row gap-6  border-2 border-dashed border-blue-500 ">
         <div className="flex-1 bg-gray-200 p-6 rounded shadow">
           <h2 className="text-2x1 font-semibold mb-4 text-center">
-            {completedWorkout.workout.name} {completedWorkout.date}
+            {completedWorkout.workout?.name || "Deleted Workout"}
+            <br></br>
+            {new Date(completedWorkout.date).toLocaleDateString()}
           </h2>
 
           {completedWorkout.exercises.map(exercise => (

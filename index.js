@@ -2,6 +2,7 @@ const express = require("express");
 const prisma = require("./client");
 const jwt = require("jsonwebtoken");
 const authRoutes = require("./routes/auth");
+const weightTrackerRoutes = require("./routes/api/weightTracker");
 const verifyToken = require("./middleware/verifyToken");
 const workoutRoutes = require("./routes/api/workout");
 const completedWorkoutRoutes = require("./routes/api/completedWorkout");
@@ -37,6 +38,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRoutes);
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/completedWorkouts", completedWorkoutRoutes);
+app.use("/api/weightTracker", weightTrackerRoutes);
 
 /* app.post("/api/posts", verifyToken, (req, res) => {      Same as below, just old method, leaving here for learning
   jwt.verify(req.token, "secret", (err, authData) => {

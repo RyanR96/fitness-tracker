@@ -19,6 +19,7 @@ model User {
   password String
   workouts Workout[]
   completedWorkouts CompletedWorkout[]
+  WeightEntries WeightEntry[]
 }
 
 
@@ -69,4 +70,12 @@ model Set {
   weight Float
   formRating Int
   dropset Boolean
+}
+
+model WeightEntry {
+  id Int @id @default(autoincrement())
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  weight Float
+  date DateTime @default(now())
 }

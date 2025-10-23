@@ -9,4 +9,6 @@ router.get("/", verifyToken, weightTrackerController.getAllWeight);
 
 router.post("/", verifyToken, weightTrackerController.addWeight);
 
+router.delete("/:id", verifyToken, weightTrackerController.deleteWeight);
+
 module.exports = router;

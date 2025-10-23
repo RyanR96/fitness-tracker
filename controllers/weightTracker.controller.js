@@ -34,7 +34,35 @@ const addWeight = async (req, res) => {
   }
 };
 
+const deleteWeight = async (req, res) => {
+  const id = parseInt(req.params.id);
+  const userId = req.user.id;
+  try {
+    const entry = await prisma.weightEntry.findUnique({
+      where: { id: id },
+    });
+
+    if (!entry) {
+      return res.status(404).json({ error: "Weight entry not found" });
+    }
+    if (entry.userId !== userId) {
+      return res.status(403).json({ error: "Not authorised to delete" });
+    }
+    await prisma.weightEntry.delete({
+      where: { id: id },
+    });
+
+    res.status(200).json({ message: "Weight entry succesfully deleted" });
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ error: "Failed to delete weight entry", details: err.message });
+  }
+};
+
 module.exports = {
   getAllWeight,
   addWeight,
+  deleteWeight,
 };

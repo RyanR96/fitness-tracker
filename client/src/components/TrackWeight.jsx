@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ResponsiveContainer,
   LineChart,
@@ -10,15 +10,41 @@ import {
 } from "recharts";
 
 function TrackWeight() {
-  const [weightData, setWeightData] = useState([
-    { date: new Date("2025-09-01").getTime(), weight: 75 },
-    { date: new Date("2025-09-08").getTime(), weight: 73 },
-    { date: new Date("2025-09-10").getTime(), weight: 74 },
-    { date: new Date("2025-09-15").getTime(), weight: 71 },
-  ]);
+  const [weightData, setWeightData] = useState([]);
 
   const [newDate, setNewData] = useState("");
   const [newWeight, setNewWeight] = useState("");
+
+  useEffect(() => {
+    const fetchWeight = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://localhost:3000/api/weightTracker/", {
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error(`Failed to fetch weight history:${res.status}`);
+        }
+
+        const data = await res.json();
+        console.log(data);
+        const formattedData = data.map(entry => ({
+          id: entry.id,
+          weight: entry.weight,
+          date: new Date(entry.date).getTime(),
+        }));
+        console.log("Formatted data", formattedData);
+
+        setWeightData(formattedData);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchWeight();
+  }, []); //Probably needs to be when new weight is added, maybe the state newWeight?
 
   const handleEntry = () => {
     if (!newDate || !newWeight) return;

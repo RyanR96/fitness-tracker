@@ -106,29 +106,61 @@ function TrackWeight() {
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <div className="p-4 rounded-lg shadow">
-        <h2 className="text-lg font-bold mb-6 text-center">Add new weight</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-self-center">
-          <input
-            type="date"
-            className="border px-3 py-2 rounded w-full md:w-auto"
-            value={newDate}
-            onChange={e => setNewData(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Weight(KG)"
-            value={newWeight}
-            className="border px-3 py-2 rounded w-full md:w-auto"
-            onChange={e => setNewWeight(e.target.value)}
-          />
+      <div className="grid grid-cols-1 lg:grid-cols-2">
+        <div className="p-4 rounded-lg shadow">
+          <h2 className="text-lg font-bold mb-6 text-center">Add new weight</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-self-center">
+            <input
+              type="date"
+              className="border px-3 py-2 rounded w-full md:w-auto"
+              value={newDate}
+              onChange={e => setNewData(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="Weight(KG)"
+              value={newWeight}
+              className="border px-3 py-2 rounded w-full md:w-auto"
+              onChange={e => setNewWeight(e.target.value)}
+            />
 
-          <button
-            className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 md:col-span-2 justify-self-center"
-            onClick={handleEntry}
-          >
-            Add weight
-          </button>
+            <button
+              className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 md:col-span-2 justify-self-center"
+              onClick={handleEntry}
+            >
+              Add weight
+            </button>
+          </div>
+        </div>
+        <div className="p-4 rounded-lg shadow border-2 border-dashed border-blue-500">
+          <h2 className="text-lg font-bold mb-6 text-center">Weight Entries</h2>
+          {weightData === 0 ? (
+            <p>No weight entries added yet</p>
+          ) : (
+            <ul className="divide-y divide-gray-200 max-h-[400px] overflow-y-auto ">
+              {weightData.map(entry => (
+                <li
+                  key={entry.id}
+                  className="grid grid-cols-3 py-3 items-center hover:bg-green-200 transitions-colors duration-300"
+                >
+                  <span className="text-left">
+                    {new Date(entry.date).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "2-digit",
+                    })}
+                  </span>
+                  <span className="text-center">
+                    <strong>{entry.weight}KG</strong>
+                  </span>
+
+                  <button className=" text-red-500 hover:text-red-700 font-semibold justify-self-end">
+                    X
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </div>

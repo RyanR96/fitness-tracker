@@ -8,12 +8,15 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
+import ConfirmFinishModal from "./ConfirmFinishModal";
 
 function TrackWeight() {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [weightData, setWeightData] = useState([]);
 
   const [newDate, setNewData] = useState("");
   const [newWeight, setNewWeight] = useState("");
+  const [entryToDelete, setEntryToDelete] = useState(null);
 
   useEffect(() => {
     const fetchWeight = async () => {
@@ -103,6 +106,10 @@ function TrackWeight() {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleDelete = async () => {
+    alert("Delete would happen");
   };
 
   return (
@@ -197,7 +204,13 @@ function TrackWeight() {
                     <strong>{entry.weight}KG</strong>
                   </span>
 
-                  <button className=" text-red-500 hover:text-red-700 font-semibold justify-self-end">
+                  <button
+                    className=" text-red-500 hover:text-red-700 font-semibold justify-self-end"
+                    onClick={() => {
+                      setIsConfirmOpen(true);
+                      setEntryToDelete(entry);
+                    }}
+                  >
                     X
                   </button>
                 </li>
@@ -205,6 +218,28 @@ function TrackWeight() {
             </ul>
           )}
         </div>
+        <ConfirmFinishModal
+          isOpen={isConfirmOpen}
+          onConfirm={handleDelete}
+          onCancel={() => setIsConfirmOpen(false)}
+          title="Delete weight entry?"
+          message={
+            <>
+              Are you sure you want to <strong>permanently </strong>delete the
+              entry dated on{" "}
+              <strong>
+                {entryToDelete?.date &&
+                  new Date(entryToDelete.date).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "2-digit",
+                  })}
+                ?{" "}
+              </strong>
+            </>
+          }
+          action="Delete"
+        />
       </div>
     </div>
   );

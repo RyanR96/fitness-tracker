@@ -46,7 +46,7 @@ function TrackWeight() {
     fetchWeight();
   }, []); //Probably needs to be when new weight is added, maybe the state newWeight?
 
-  const handleEntry = () => {
+  const handleEntryMOCKDATA = () => {
     if (!newDate || !newWeight) return;
 
     const newEntry = {
@@ -60,6 +60,49 @@ function TrackWeight() {
     setWeightData(updatedData);
     setNewData("");
     setNewWeight("");
+  };
+
+  const handleEntry = async () => {
+    if (!newDate || !newWeight) {
+      alert("Please enter both date and weight");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://localhost:3000/api/weightTracker/", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `bearer ${token}`,
+        },
+        body: JSON.stringify({
+          weight: parseFloat(newWeight),
+          date: newDate,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to add weight");
+      }
+      /** Could do another fetch call instead of all this... but I think this is more efficient? Maybe buggy if two devices at once */
+      const newEntry = await res.json();
+      const formattedEntry = {
+        ...newEntry,
+        date: new Date(newEntry.date).getTime(),
+      };
+      console.log("Pushing this data", formattedEntry);
+      console.log("Pushing that into", weightData);
+      const updatedData = [...weightData, formattedEntry].sort(
+        (a, b) => a.date - b.date
+      );
+      console.log("Post pushing data", updatedData);
+      setWeightData(updatedData);
+      setNewData("");
+      setNewWeight("");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -132,7 +175,7 @@ function TrackWeight() {
             </button>
           </div>
         </div>
-        <div className="p-4 rounded-lg shadow border-2 border-dashed border-blue-500">
+        <div className="p-2 rounded-lg shadow border-2 border-dashed border-blue-500">
           <h2 className="text-lg font-bold mb-6 text-center">Weight Entries</h2>
           {weightData === 0 ? (
             <p>No weight entries added yet</p>
@@ -141,7 +184,7 @@ function TrackWeight() {
               {weightData.map(entry => (
                 <li
                   key={entry.id}
-                  className="grid grid-cols-3 py-3 items-center hover:bg-green-200 transitions-colors duration-300"
+                  className="grid grid-cols-3 py-3 items-center hover:bg-green-200 transitions-colors duration-182"
                 >
                   <span className="text-left">
                     {new Date(entry.date).toLocaleDateString("en-GB", {

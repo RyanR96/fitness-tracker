@@ -49,22 +49,6 @@ function TrackWeight() {
     fetchWeight();
   }, []); //Probably needs to be when new weight is added, maybe the state newWeight?
 
-  const handleEntryMOCKDATA = () => {
-    if (!newDate || !newWeight) return;
-
-    const newEntry = {
-      date: new Date(newDate).getTime(),
-      weight: parseFloat(newWeight),
-    };
-
-    const updatedData = [...weightData, newEntry].sort(
-      (a, b) => a.date - b.date
-    );
-    setWeightData(updatedData);
-    setNewData("");
-    setNewWeight("");
-  };
-
   const handleEntry = async () => {
     if (!newDate || !newWeight) {
       alert("Please enter both date and weight");
@@ -108,8 +92,25 @@ function TrackWeight() {
     }
   };
 
-  const handleDelete = async () => {
-    alert("Delete would happen");
+  const handleDelete = async id => {
+    console.log(id);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`http://localhost:3000/api/weightTracker/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`Failed to delete entry, status: ${res.status}`);
+      }
+
+      setWeightData(prev => prev.filter(entry => entry.id !== id));
+    } catch (err) {
+      console.error(err.message);
+    }
   };
 
   return (
@@ -220,7 +221,10 @@ function TrackWeight() {
         </div>
         <ConfirmFinishModal
           isOpen={isConfirmOpen}
-          onConfirm={handleDelete}
+          onConfirm={() => {
+            handleDelete(entryToDelete.id);
+            setIsConfirmOpen(false);
+          }}
           onCancel={() => setIsConfirmOpen(false)}
           title="Delete weight entry?"
           message={

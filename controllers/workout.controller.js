@@ -17,7 +17,12 @@ const getAllWorkouts = async (req, res) => {
   try {
     const workouts = await prisma.workout.findMany({
       where: { userId: req.user.id },
-      include: { exercises: true },
+      include: {
+        exercises: {
+          include: { exerciseTemplate: true },
+          orderBy: { order: "asc" },
+        },
+      },
     });
     res.json(workouts);
   } catch (err) {
@@ -30,7 +35,12 @@ const getWorkoutById = async (req, res) => {
   try {
     const workout = await prisma.workout.findFirst({
       where: { id: parseInt(req.params.id), userId: req.user.id },
-      include: { exercises: true },
+      include: {
+        exercises: {
+          include: { exerciseTemplate: true },
+          orderBy: { order: "asc" },
+        },
+      },
     });
     res.json(workout);
   } catch (err) {
@@ -61,12 +71,13 @@ const createWorkout = async (req, res) => {
         name,
         userId: req.user.id,
         exercises: {
-          create: exerciseTemplateName.map(templateName => ({
+          create: exerciseTemplateName.map((templateName, i) => ({
             exerciseTemplate: {
               connect: {
                 name: templateName,
               },
             },
+            order: i,
           })),
         },
       },

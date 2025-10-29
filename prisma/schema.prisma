@@ -60,6 +60,7 @@ model Exercise {
   completedWorkout CompletedWorkout? @relation(fields: [completedWorkoutId], references: [id], onDelete: Cascade)
   completedWorkoutId Int?
   set Set[]
+  order Int?
 }
 
 model Set {

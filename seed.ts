@@ -45,9 +45,9 @@ async function main() {
       userId: user.id,
       exercises: {
         create: [
-          { exerciseTemplateName: benchPress.name },
-          { exerciseTemplateName: overheadPress.name },
-          { exerciseTemplateName: dips.name },
+          { exerciseTemplateName: benchPress.name, order: 0 },
+          { exerciseTemplateName: overheadPress.name, order: 1 },
+          { exerciseTemplateName: dips.name, order: 2 },
         ],
       },
     },
@@ -59,8 +59,8 @@ async function main() {
       userId: user.id,
       exercises: {
         create: [
-          { exerciseTemplateName: benchPress.name },
-          { exerciseTemplateName: seatedPress.name },
+          { exerciseTemplateName: benchPress.name, order: 0 },
+          { exerciseTemplateName: seatedPress.name, order: 1 },
         ],
       },
     },

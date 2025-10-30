@@ -7,6 +7,7 @@ function CreateWorkoutModal(props) {
   const [selectedExercise, setSelectedExercise] = useState([]);
   const [workoutName, setWorkoutName] = useState("");
   const [error, setError] = useState("");
+  const [searchExercises, setSearchExercises] = useState("");
 
   useEffect(() => {
     //setAllExercises(["Bench Press", "Overhead Press", "Push ups"]);
@@ -38,6 +39,10 @@ function CreateWorkoutModal(props) {
   }, []);
 
   //if (!isOpen) return null;
+
+  const searchedExercises = allExercises.filter(ex =>
+    ex.name.toLowerCase().includes(searchExercises.toLowerCase())
+  );
 
   const addExercise = ex => {
     if (!selectedExercise.includes(ex)) {
@@ -88,7 +93,8 @@ function CreateWorkoutModal(props) {
       setSelectedExercise([]);
       onClose();
       setError("");
-      console.log("Workout created with data:");
+      setSearchExercises("");
+      console.log("Workout created with data:", data);
     } catch (err) {
       console.error("Error creating workout", err.message);
       setError(err.message);
@@ -110,7 +116,7 @@ function CreateWorkoutModal(props) {
           transition={{ duration: 0.1 }}
         >
           <motion.div
-            className="bg-white p-6 rounded shadow-lg max-w-lg w-full"
+            className="bg-white p-6 rounded shadow-lg max-w-3xl w-full h-[80vh] sm:h-[500px] overflow-hidden flex flex-col"
             initial={{ y: 50 }}
             animate={{ y: 0 }}
             exit={{ y: 50 }}
@@ -119,9 +125,9 @@ function CreateWorkoutModal(props) {
             <h2 className="text-xl font-semibold mb-4 text-center">
               Create Workout
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 flex-1 overflow-hidden justify-center">
               {/**Left side of the column */}
-              <div className="border p-4 rounded overflow-auto">
+              <div className="border p-4 rounded overflow-auto sm:col-span-1">
                 <input
                   placeholder="Enter workout name"
                   type="text"
@@ -152,12 +158,19 @@ function CreateWorkoutModal(props) {
               </div>
 
               {/**Right side of the column */}
-              <div className="border p-4 rounded overflow-auto">
+              <div className="border p-4 rounded overflow-y-auto sm:col-span-2">
                 <h2 className="text-xl font-semibold mb-4 text-center">
                   Exercises
                 </h2>
-                <ul>
-                  {allExercises.map(ex => (
+                <input
+                  type="text"
+                  placeholder="Search exercise"
+                  value={searchExercises}
+                  onChange={e => setSearchExercises(e.target.value)}
+                  className="w-full px-3 py-2 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2"
+                />
+                <ul className="grid grid-cols-2 gap-2 overflow-y">
+                  {searchedExercises.map(ex => (
                     <li
                       className="cursor-pointer py-1 hover:bg-gray-100 rounded px-2"
                       key={ex.id}

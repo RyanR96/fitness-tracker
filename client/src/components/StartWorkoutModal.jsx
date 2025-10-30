@@ -44,7 +44,7 @@ function StartWorkoutModal(props) {
         console.log(formattedData);
         setWorkouts(formattedData);
       } catch (err) {
-        console.error("Error fetching workouts");
+        console.error("Error fetching workouts", err);
       }
     };
 

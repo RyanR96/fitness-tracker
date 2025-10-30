@@ -33,6 +33,7 @@ const getCompletedWorkoutById = async (req, res) => {
             exerciseTemplate: true,
             set: true,
           },
+          orderBy: { order: "asc" },
         },
       },
     });
@@ -59,6 +60,7 @@ const createCompletedWorkout = async (req, res) => {
         date: new Date(),
         exercises: {
           create: completedExercises.map(exercise => ({
+            order: exercise.order,
             exerciseTemplate: {
               connect: {
                 name: exercise.exerciseTemplateName,

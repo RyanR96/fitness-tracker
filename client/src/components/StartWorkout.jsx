@@ -112,8 +112,9 @@ function StartWorkout() {
   const handleFinish = async () => {
     console.log(exercise);
 
-    const completedExercise = exercise.map(ex => ({
+    const completedExercise = exercise.map((ex, index) => ({
       exerciseTemplateName: ex.exerciseTemplateName,
+      order: index,
       sets: ex.sets
         .filter(s => s.weight !== "" && s.reps !== "")
         .map(s => ({

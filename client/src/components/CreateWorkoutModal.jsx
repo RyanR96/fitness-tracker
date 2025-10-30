@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Reorder } from "framer-motion";
 
 function CreateWorkoutModal(props) {
   const { isOpen, onClose } = props;
@@ -135,26 +135,36 @@ function CreateWorkoutModal(props) {
                   onChange={e => setWorkoutName(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3"
                 />
-                {selectedExercise.length === 0 ? (
-                  <p className="text-gray-500">No exercises selected</p>
-                ) : (
-                  <ul>
-                    {selectedExercise.map(ex => (
-                      <li
-                        key={ex.id}
-                        className="flex justify-between items-center py-1"
-                      >
-                        {ex.name}
-                        <button
-                          className="text-red-500 hover:text-red-700"
-                          onClick={() => removeExercise(ex)}
+                <div className="relative flex-1 overflow-hidden">
+                  {selectedExercise.length === 0 ? (
+                    <p className="text-gray-500">No exercises selected</p>
+                  ) : (
+                    <Reorder.Group
+                      axis="y"
+                      values={selectedExercise}
+                      onReorder={setSelectedExercise}
+                      className="space-y-2"
+                    >
+                      {selectedExercise.map(ex => (
+                        <Reorder.Item
+                          key={ex.id}
+                          value={ex}
+                          className="flex justify-between items-center py-1 px-3 bg-gray-100 rounded shadow-sm cursor-grab actve:cursor-grabbing"
+                          dragConstraints={{ top: 0, bottom: 0 }}
+                          whileTap={{ scale: 0.96 }}
                         >
-                          X
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                          {ex.name}
+                          <button
+                            className="text-red-500 hover:text-red-700"
+                            onClick={() => removeExercise(ex)}
+                          >
+                            X
+                          </button>
+                        </Reorder.Item>
+                      ))}
+                    </Reorder.Group>
+                  )}
+                </div>
               </div>
 
               {/**Right side of the column */}

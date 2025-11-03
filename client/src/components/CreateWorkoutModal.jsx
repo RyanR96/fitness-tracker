@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, Reorder } from "framer-motion";
+import { motion, AnimatePresence, Reorder, LayoutGroup } from "framer-motion";
 
 function CreateWorkoutModal(props) {
   const { isOpen, onClose } = props;
@@ -46,12 +46,14 @@ function CreateWorkoutModal(props) {
 
   const addExercise = ex => {
     if (!selectedExercise.includes(ex)) {
-      setSelectedExercise([...selectedExercise, ex]);
+      setSelectedExercise(prev => [...prev, ex]);
+      setAllExercises(prev => prev.filter(e => e.id !== ex.id));
     }
   };
 
   const removeExercise = ex => {
     setSelectedExercise(selectedExercise.filter(exercise => exercise !== ex));
+    setAllExercises(prev => [...prev, ex].sort((a, b) => a.id - b.id));
   };
 
   const handleCreate = async () => {
@@ -116,7 +118,7 @@ function CreateWorkoutModal(props) {
           transition={{ duration: 0.1 }}
         >
           <motion.div
-            className="bg-white p-6 rounded shadow-lg max-w-3xl w-full h-[80vh] sm:h-[500px] overflow-hidden flex flex-col"
+            className="bg-white p-6 rounded-2xl shadow-xl max-w-3xl w-full h-[80vh] sm:h-[500px] overflow-hidden flex flex-col"
             initial={{ y: 50 }}
             animate={{ y: 0 }}
             exit={{ y: 50 }}
@@ -125,73 +127,79 @@ function CreateWorkoutModal(props) {
             <h2 className="text-xl font-semibold mb-4 text-center">
               Create Workout
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 flex-1 overflow-hidden justify-center">
-              {/**Left side of the column */}
-              <div className="border p-4 rounded overflow-auto sm:col-span-1">
-                <input
-                  placeholder="Enter workout name"
-                  type="text"
-                  value={workoutName}
-                  onChange={e => setWorkoutName(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3"
-                />
-                <div className="relative flex-1 overflow-hidden">
-                  {selectedExercise.length === 0 ? (
-                    <p className="text-gray-500">No exercises selected</p>
-                  ) : (
-                    <Reorder.Group
-                      axis="y"
-                      values={selectedExercise}
-                      onReorder={setSelectedExercise}
-                      className="space-y-2"
-                    >
-                      {selectedExercise.map(ex => (
-                        <Reorder.Item
-                          key={ex.id}
-                          value={ex}
-                          className="flex justify-between items-center py-1 px-3 bg-gray-100 rounded shadow-sm cursor-grab actve:cursor-grabbing"
-                          dragConstraints={{ top: 0, bottom: 0 }}
-                          whileTap={{ scale: 0.96 }}
-                        >
-                          {ex.name}
-                          <button
-                            className="text-red-500 hover:text-red-700"
-                            onClick={() => removeExercise(ex)}
+            <LayoutGroup>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 flex-1 overflow-hidden justify-center">
+                {/**Left side of the column */}
+                <div className="border p-4 rounded overflow-auto custom-scrollbar sm:col-span-1">
+                  <input
+                    placeholder="Enter workout name"
+                    type="text"
+                    value={workoutName}
+                    onChange={e => setWorkoutName(e.target.value)}
+                    className="w-full px-3 py-2 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2"
+                  />
+                  {/** Could actually remove the hidden overflow here, not sure what looks better? */}
+                  <div className="relative flex-1 overflow-hidden">
+                    {selectedExercise.length === 0 ? (
+                      <p className="text-gray-500">No exercises selected</p>
+                    ) : (
+                      <Reorder.Group
+                        axis="y"
+                        values={selectedExercise}
+                        onReorder={setSelectedExercise}
+                        className="space-y-2"
+                      >
+                        {selectedExercise.map(ex => (
+                          <Reorder.Item
+                            key={ex.id}
+                            value={ex}
+                            layoutId={ex.id}
+                            className="rounded-xl flex justify-between items-center py-1 px-3 bg-gray-100 rounded shadow-sm cursor-grab actve:cursor-grabbing"
+                            dragConstraints={{ top: 0, bottom: 0 }}
+                            whileTap={{ scale: 0.96 }}
                           >
-                            X
-                          </button>
-                        </Reorder.Item>
-                      ))}
-                    </Reorder.Group>
-                  )}
+                            {ex.name}
+                            <button
+                              className="text-red-500 hover:text-red-700"
+                              onClick={() => removeExercise(ex)}
+                            >
+                              X
+                            </button>
+                          </Reorder.Item>
+                        ))}
+                      </Reorder.Group>
+                    )}
+                  </div>
+                </div>
+
+                {/**Right side of the column */}
+                <div className="border  p-4 rounded overflow-y-auto custom-scrollbar sm:col-span-2">
+                  <h2 className="text-xl font-semibold mb-4 text-center">
+                    Exercises
+                  </h2>
+                  <input
+                    type="text"
+                    placeholder="Search exercise"
+                    value={searchExercises}
+                    onChange={e => setSearchExercises(e.target.value)}
+                    className="w-full px-3 py-2 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2"
+                  />
+                  <ul className="grid grid-cols-2 gap-2 overflow-y">
+                    {searchedExercises.map(ex => (
+                      <motion.li
+                        className="bg-gray-100 shadow rounded-xl hover:shadow-lg hover:bg-gray-200 transition cursor-pointer py-1 rounded px-2"
+                        key={ex.id}
+                        layoutId={ex.id}
+                        transition={{ duration: 0 }}
+                        onClick={() => addExercise(ex)}
+                      >
+                        {ex.name}
+                      </motion.li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-
-              {/**Right side of the column */}
-              <div className="border p-4 rounded overflow-y-auto sm:col-span-2">
-                <h2 className="text-xl font-semibold mb-4 text-center">
-                  Exercises
-                </h2>
-                <input
-                  type="text"
-                  placeholder="Search exercise"
-                  value={searchExercises}
-                  onChange={e => setSearchExercises(e.target.value)}
-                  className="w-full px-3 py-2 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2"
-                />
-                <ul className="grid grid-cols-2 gap-2 overflow-y">
-                  {searchedExercises.map(ex => (
-                    <li
-                      className="cursor-pointer py-1 hover:bg-gray-100 rounded px-2"
-                      key={ex.id}
-                      onClick={() => addExercise(ex)}
-                    >
-                      {ex.name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            </LayoutGroup>
             <p className="text-red-500 text-sm mt-1 h-2">{error || " "}</p>
             <div className="mt-6 flex justify-between gap-4">
               <button

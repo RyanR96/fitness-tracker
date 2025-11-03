@@ -3,6 +3,7 @@ import { motion, AnimatePresence, Reorder, LayoutGroup } from "framer-motion";
 
 function CreateWorkoutModal(props) {
   const { isOpen, onClose } = props;
+  const [fetchedExercises, setfetchedExercises] = useState([]);
   const [allExercises, setAllExercises] = useState([]);
   const [selectedExercise, setSelectedExercise] = useState([]);
   const [workoutName, setWorkoutName] = useState("");
@@ -27,6 +28,7 @@ function CreateWorkoutModal(props) {
 
         const data = await res.json();
         console.log("data is :", data);
+        setfetchedExercises(data);
         setAllExercises(data);
         console.log("All exercises state is:", allExercises);
       } catch (err) {
@@ -96,6 +98,7 @@ function CreateWorkoutModal(props) {
       onClose();
       setError("");
       setSearchExercises("");
+      setAllExercises([...fetchedExercises]);
       console.log("Workout created with data:", data);
     } catch (err) {
       console.error("Error creating workout", err.message);

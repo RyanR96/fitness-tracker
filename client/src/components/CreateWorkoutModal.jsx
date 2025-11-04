@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, Reorder, LayoutGroup } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  Reorder,
+  LayoutGroup,
+  easeInOut,
+} from "framer-motion";
 
 function CreateWorkoutModal(props) {
   const { isOpen, onClose } = props;
@@ -60,12 +66,12 @@ function CreateWorkoutModal(props) {
 
   const handleCreate = async () => {
     if (selectedExercise.length === 0) {
-      alert("Please select at least one exercise");
+      setError("Please select at least one exercise");
       return;
     }
 
     if (workoutName.length <= 0) {
-      alert("Please enter a workout name");
+      setError("Please enter a workout name");
       return;
     }
 
@@ -195,6 +201,7 @@ function CreateWorkoutModal(props) {
                         layoutId={ex.id}
                         transition={{ duration: 0 }}
                         onClick={() => addExercise(ex)}
+                        whileTap={{ scale: 0.96 }}
                       >
                         {ex.name}
                       </motion.li>
@@ -203,7 +210,18 @@ function CreateWorkoutModal(props) {
                 </div>
               </div>
             </LayoutGroup>
-            <p className="text-red-500 text-sm mt-1 h-2">{error || " "}</p>
+
+            <motion.p
+              className="text-red-500 text-sm mt-1 h-2"
+              key={error}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, x: [0, -8, 8, -6, 6, -4, 4, 0] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: easeInOut }}
+            >
+              {error || ""}
+            </motion.p>
+
             <div className="mt-6 flex justify-between gap-4">
               <button
                 className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"

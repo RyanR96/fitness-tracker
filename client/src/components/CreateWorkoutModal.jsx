@@ -39,6 +39,7 @@ function CreateWorkoutModal(props) {
         console.log("All exercises state is:", allExercises);
       } catch (err) {
         console.error("Error fetching exercises", err);
+        setError(err.message);
 
         //maybe set a state with the message and render it?
       }
@@ -127,7 +128,7 @@ function CreateWorkoutModal(props) {
           transition={{ duration: 0.1 }}
         >
           <motion.div
-            className="bg-white p-6 rounded-2xl shadow-xl max-w-3xl w-full h-[80vh] sm:h-[500px] overflow-hidden flex flex-col"
+            className="bg-white p-6 rounded-2xl shadow-xl max-w-3xl w-full h-[80vh] sm:h-[505px] overflow-hidden flex flex-col"
             initial={{ y: 50 }}
             animate={{ y: 0 }}
             exit={{ y: 50 }}
@@ -137,7 +138,7 @@ function CreateWorkoutModal(props) {
               Create Workout
             </h2>
             <LayoutGroup>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 flex-1 overflow-hidden justify-center">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 overflow-hidden justify-center h-full">
                 {/**Left side of the column */}
                 <div className="border p-4 rounded overflow-auto custom-scrollbar sm:col-span-1">
                   <input
@@ -212,7 +213,7 @@ function CreateWorkoutModal(props) {
             </LayoutGroup>
 
             <motion.p
-              className="text-red-500 text-sm mt-1 h-2"
+              className="text-red-500 text-sm mt-2 min-h-[18px] font-bold"
               key={error}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1, x: [0, -8, 8, -6, 6, -4, 4, 0] }}

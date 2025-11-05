@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, easeInOut } from "framer-motion";
 import ConfirmFinishModal from "./ConfirmFinishModal";
 
 function StartWorkoutModal(props) {
@@ -10,6 +10,7 @@ function StartWorkoutModal(props) {
   const [workouts, setWorkouts] = useState([]);
   const [selectedWorkout, setSelectedWorkout] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!isOpen) return; // Prevent needless fetch when close
@@ -43,8 +44,10 @@ function StartWorkoutModal(props) {
         }));
         console.log(formattedData);
         setWorkouts(formattedData);
+        setError("");
       } catch (err) {
         console.error("Error retrieving workouts", err.message);
+        setError(err.message);
       }
     };
 
@@ -59,13 +62,12 @@ function StartWorkoutModal(props) {
   };
 
   const handleStart = () => {
-    if (!selectedWorkout) return alert("Please select a workout");
+    if (!selectedWorkout) return setError("Please select a workout");
     navigate(`/workout/${selectedWorkout.id}`);
     onClose();
   };
 
   const handleDelete = async () => {
-    //alert("Placeholder");
     console.log("workout to delete is :", selectedWorkout);
 
     try {
@@ -84,8 +86,10 @@ function StartWorkoutModal(props) {
       );
       setSelectedWorkout(null);
       setIsConfirmOpen(false);
+      setError("");
     } catch (err) {
       console.error(err);
+      setError(err.message);
     }
   };
 
@@ -101,7 +105,7 @@ function StartWorkoutModal(props) {
         >
           {/**Breaks if I don't have flex-col here, I want to learn more about the why, so make sure to look it up later! */}
           <motion.div
-            className="bg-white p-6 rounded-2xl shadow-xl h-[80vh] sm:h-[500px] max-w-3xl w-full flex flex-col"
+            className="bg-white p-6 rounded-2xl shadow-xl h-[80vh] sm:h-[505px] max-w-3xl w-full flex flex-col"
             initial={{ y: 50 }}
             animate={{ y: 0 }}
             exit={{ y: 50 }}
@@ -110,7 +114,7 @@ function StartWorkoutModal(props) {
             <h2 className="text-xl font-semibold mb-4 text-center">
               Start Workout
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 overflow-hidden">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 overflow-hidden h-full">
               {/**Left side of the column */}
               <div className="border p-4 rounded overflow-auto custom-scrollbar">
                 <h2 className="text-xl font-semibold mb-4 text-center">
@@ -161,16 +165,26 @@ function StartWorkoutModal(props) {
                 )}
               </div>
             </div>
-            <div className="mt-6 flex justify-between gap-4">
+            <motion.p
+              className="text-red-500 text-sm mt-1 min-h-[18px] font-bold"
+              key={error}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, x: [0, -8, 8, -6, 6, -4, 4, 0] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: easeInOut }}
+            >
+              {error || ""}
+            </motion.p>
+            <div className="mt-6 flex flex-col sm:flex-row sm:justify-between items-center gap-3">
               <button
-                className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                className="w-full sm:w-auto bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
                 onClick={handleStart}
               >
                 Start Workout
               </button>
 
               <button
-                className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                className="w-full sm:w-auto bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
                 onClick={() => setIsConfirmOpen(true)}
                 disabled={!selectedWorkout}
               >
@@ -178,7 +192,7 @@ function StartWorkoutModal(props) {
               </button>
 
               <button
-                className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                className="w-full sm:w-auto bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
                 onClick={handleClose}
               >
                 Close

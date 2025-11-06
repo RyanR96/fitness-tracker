@@ -66,13 +66,20 @@ function CreateWorkoutModal(props) {
   };
 
   const handleCreate = async () => {
+    setError("");
     if (selectedExercise.length === 0) {
-      setError("Please select at least one exercise");
+      requestAnimationFrame(() => {
+        setError("Please select at least one exercise");
+      });
+
       return;
     }
 
     if (workoutName.length <= 0) {
-      setError("Please enter a workout name");
+      requestAnimationFrame(() => {
+        setError("Please enter a workout name");
+      });
+
       return;
     }
 

@@ -62,7 +62,14 @@ function StartWorkoutModal(props) {
   };
 
   const handleStart = () => {
-    if (!selectedWorkout) return setError("Please select a workout");
+    setError("");
+    if (!selectedWorkout) {
+      requestAnimationFrame(() => {
+        setError("Please select a workout");
+      });
+
+      return;
+    }
     navigate(`/workout/${selectedWorkout.id}`);
     onClose();
   };
@@ -185,8 +192,17 @@ function StartWorkoutModal(props) {
 
               <button
                 className="w-full sm:w-auto bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
-                onClick={() => setIsConfirmOpen(true)}
-                disabled={!selectedWorkout}
+                onClick={() => {
+                  setError("");
+                  if (!selectedWorkout) {
+                    requestAnimationFrame(() => {
+                      setError("Please select a workout");
+                    });
+
+                    return;
+                  }
+                  setIsConfirmOpen(true);
+                }}
               >
                 Delete Workout
               </button>

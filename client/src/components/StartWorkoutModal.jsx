@@ -135,10 +135,10 @@ function StartWorkoutModal(props) {
                       <li key={workout.id}>
                         <button
                           onClick={() => setSelectedWorkout(workout)}
-                          className={`w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${
+                          className={`w-full text-left px-4 py-2 rounded-lg hover:shadow-lg transitions-colors duration-182 ${
                             selectedWorkout?.id === workout.id
                               ? "bg-green-500 text-white"
-                              : "bg-gray-100 hover:bg-gray-200"
+                              : "bg-gray-100 hover:bg-green-200"
                           }`}
                         >
                           {workout.name}

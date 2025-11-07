@@ -204,7 +204,7 @@ function CreateWorkoutModal(props) {
                   <ul className="grid grid-cols-2 gap-2 overflow-y">
                     {searchedExercises.map(ex => (
                       <motion.li
-                        className="bg-gray-100 shadow rounded-xl hover:shadow-lg hover:bg-gray-200 transition cursor-pointer py-1 rounded px-2"
+                        className="bg-gray-100 shadow rounded-xl hover:shadow-lg hover:bg-green-200 transitions-colors duration-182 transition cursor-pointer py-1 rounded px-2"
                         key={ex.id}
                         layoutId={ex.id}
                         transition={{ duration: 0 }}

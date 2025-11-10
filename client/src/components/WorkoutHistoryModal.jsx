@@ -60,6 +60,17 @@ function WorkoutHistoryModal(props) {
     fetchData();
   }, [isOpen]);
 
+  const workoutsArray = workouts || [];
+  const completedArray = completedWorkouts || [];
+  const hasDeleted = completedArray.some(cw => cw.workout === null);
+
+  const combinedWorkouts = [
+    ...workoutsArray,
+    ...(hasDeleted
+      ? [{ id: "deleted-workouts", name: "Deleted workouts" }]
+      : []),
+  ];
+
   //if (!isOpen) return null;
 
   return (
@@ -88,11 +99,11 @@ function WorkoutHistoryModal(props) {
                 <h2 className="text-xl font-semibold mb-4 text-center">
                   Filter by workout
                 </h2>
-                {workouts.length === 0 ? (
+                {combinedWorkouts.length === 0 ? (
                   <p>No workouts to filter from</p>
                 ) : (
                   <ul className="space-y-2 ">
-                    {workouts.map(workout => (
+                    {combinedWorkouts.map(workout => (
                       <li key={workout.id}>
                         <button
                           onClick={() => handleWorkoutClick(workout)}
@@ -118,42 +129,48 @@ function WorkoutHistoryModal(props) {
                 {selectedWorkout ? (
                   <ul className="space-y-2">
                     {completedWorkouts
-                      .filter(
-                        cw => cw.workout && cw.workout.id === selectedWorkout.id
-                      )
+                      .filter(cw => {
+                        if (selectedWorkout.id === "deleted-workouts")
+                          return cw.workout === null;
+                        return (
+                          cw.workout && cw.workout.id === selectedWorkout.id
+                        );
+                      })
                       .map(cw => (
-                        <li
-                          key={cw.id}
-                          className={`w-full text-left px-4 py-2 rounded-lg hover:shadow-lg transitions-colors duration-182 ${
-                            selectedCompletedWorkout?.id === cw.id
-                              ? "bg-green-500 text-white"
-                              : "bg-gray-100 hover:bg-green-200"
-                          }`}
-                          onClick={() => setSelectedCompletedWorkout(cw)}
-                        >
-                          {cw.workout.name} -{" "}
-                          {new Date(cw.date).toLocaleDateString()}
+                        <li key={cw.id}>
+                          <button
+                            className={`w-full text-left px-4 py-2 rounded-lg hover:shadow-lg transitions-colors duration-182 ${
+                              selectedCompletedWorkout?.id === cw.id
+                                ? "bg-green-500 text-white"
+                                : "bg-gray-100 hover:bg-green-200"
+                            }`}
+                            onClick={() => setSelectedCompletedWorkout(cw)}
+                          >
+                            {cw.workout ? cw.workout.name : "Deleted Workout"} -{" "}
+                            {new Date(cw.date).toLocaleDateString()}
+                          </button>
                         </li>
                       ))}
                   </ul>
                 ) : completedWorkouts && completedWorkouts.length > 0 ? (
                   <ul className="space-y-2">
                     {completedWorkouts.map(cw => (
-                      <li
-                        key={cw.id}
-                        className={`w-full text-left px-4 py-2 rounded-lg hover:shadow-lg transitions-colors duration-182 ${
-                          selectedCompletedWorkout?.id === cw.id
-                            ? "bg-green-500 text-white"
-                            : "bg-gray-100 hover:bg-green-200"
-                        }`}
-                        onClick={() => {
-                          setSelectedCompletedWorkout(cw), console.log(cw);
-                        }}
-                      >
-                        {" "}
-                        {/** Can add cw.workoutName if I decide to do a snapshot later on */}
-                        {cw.workout ? cw.workout.name : "Deleted Workout"} -{" "}
-                        {new Date(cw.date).toLocaleDateString()}
+                      <li key={cw.id}>
+                        <button
+                          className={`w-full text-left px-4 py-2 rounded-lg hover:shadow-lg transitions-colors duration-182 ${
+                            selectedCompletedWorkout?.id === cw.id
+                              ? "bg-green-500 text-white"
+                              : "bg-gray-100 hover:bg-green-200"
+                          }`}
+                          onClick={() => {
+                            setSelectedCompletedWorkout(cw), console.log(cw);
+                          }}
+                        >
+                          {" "}
+                          {/** Can add cw.workoutName if I decide to do a snapshot later on */}
+                          {cw.workout ? cw.workout.name : "Deleted Workout"} -{" "}
+                          {new Date(cw.date).toLocaleDateString()}
+                        </button>
                       </li>
                     ))}
                   </ul>

@@ -2,8 +2,12 @@ const prisma = require("../client");
 
 const getCompletedWorkouts = async (req, res) => {
   try {
+    const userId = req.user.id;
+    if (!userId) {
+      return res.status(401).json({ error: "User id is missing" });
+    }
     const completedWorkouts = await prisma.completedWorkout.findMany({
-      where: { userId: req.userId },
+      where: { userId },
       orderBy: { date: "desc" },
       include: {
         workout: true,
@@ -15,6 +19,7 @@ const getCompletedWorkouts = async (req, res) => {
         },
       },
     });
+
     res.status(200).json(completedWorkouts);
   } catch (err) {
     console.error(err);

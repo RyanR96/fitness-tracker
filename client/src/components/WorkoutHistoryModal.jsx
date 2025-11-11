@@ -60,10 +60,11 @@ function WorkoutHistoryModal(props) {
     fetchData();
   }, [isOpen]);
 
+  // Creates deleteWorkout button, if a deleted workout exists
   const workoutsArray = workouts || [];
   const completedArray = completedWorkouts || [];
   const hasDeleted = completedArray.some(cw => cw.workout === null);
-
+  /** Could put this in a useMemo, not needed as data is so small but could be interesting learning */
   const combinedWorkouts = [
     ...workoutsArray,
     ...(hasDeleted
@@ -71,6 +72,22 @@ function WorkoutHistoryModal(props) {
       : []),
   ];
 
+  const filterByWorkout = selectedWorkout
+    ? completedWorkouts.filter(cw => {
+        if (selectedWorkout.id === "deleted-workouts")
+          return cw.workout === null;
+        return cw.workout && cw.workout.id === selectedWorkout.id;
+      })
+    : [];
+  /** This code exact same as one above, just helped me visualise it better in an If statement sometimes.
+  let filteredByWorkout = [];
+  if (selectedWorkout) {
+    filteredByWorkout = completedWorkouts.filter(cw => {
+      if (selectedWorkout.id === "deleted-workouts") return cw.workout === null;
+      return cw.workout && cw.workout.id === selectedWorkout.id;
+    });
+  }
+*/
   //if (!isOpen) return null;
 
   return (
@@ -127,16 +144,9 @@ function WorkoutHistoryModal(props) {
                   Workout history
                 </h2>
                 {selectedWorkout ? (
-                  <ul className="space-y-2">
-                    {completedWorkouts
-                      .filter(cw => {
-                        if (selectedWorkout.id === "deleted-workouts")
-                          return cw.workout === null;
-                        return (
-                          cw.workout && cw.workout.id === selectedWorkout.id
-                        );
-                      })
-                      .map(cw => (
+                  filterByWorkout.length > 0 ? (
+                    <ul className="space-y-2">
+                      {filterByWorkout.map(cw => (
                         <li key={cw.id}>
                           <button
                             className={`w-full text-left px-4 py-2 rounded-lg hover:shadow-lg transitions-colors duration-182 ${
@@ -151,7 +161,12 @@ function WorkoutHistoryModal(props) {
                           </button>
                         </li>
                       ))}
-                  </ul>
+                    </ul>
+                  ) : (
+                    <p className="text-gray-500">
+                      Complete a workout for it to appear here!
+                    </p>
+                  )
                 ) : completedWorkouts && completedWorkouts.length > 0 ? (
                   <ul className="space-y-2">
                     {completedWorkouts.map(cw => (

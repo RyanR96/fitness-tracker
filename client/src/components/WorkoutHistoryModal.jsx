@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
 import { useEffect } from "react";
+import ConfirmFinishModal from "./ConfirmFinishModal";
 
 function WorkoutHistoryModal(props) {
   //const { isOpen, workouts, completedWorkouts, onClose } = props;
@@ -13,6 +14,7 @@ function WorkoutHistoryModal(props) {
     useState(null);
   const [workouts, setWorkouts] = useState(null);
   const [completedWorkouts, setCompletedWorkouts] = useState(null);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [error, setError] = useState("");
 
   const handleWorkoutClick = workout => {
@@ -97,6 +99,31 @@ function WorkoutHistoryModal(props) {
     });
   }
 */
+
+  const handleDelete = async () => {
+    console.log("workout to delete is :", selectedCompletedWorkout);
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(
+        `http://localhost:3000/api/completedWorkouts/${selectedCompletedWorkout.id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `bearer ${token}` },
+        }
+      );
+      if (!res.ok) throw new Error("Failed to delete workout");
+      setCompletedWorkouts(prev =>
+        prev.filter(cw => cw.id !== selectedCompletedWorkout.id)
+      );
+      setSelectedCompletedWorkout(null);
+      setIsConfirmOpen(false);
+      setError("");
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    }
+  };
   //if (!isOpen) return null;
 
   return (
@@ -233,6 +260,19 @@ function WorkoutHistoryModal(props) {
               >
                 View
               </button>
+              <button
+                className="w-full sm:w-auto bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                onClick={() => {
+                  setError("");
+                  if (!selectedCompletedWorkout) {
+                    triggerError("Please select a completed workout");
+                    return;
+                  }
+                  setIsConfirmOpen(true);
+                }}
+              >
+                Delete Workout
+              </button>
 
               <button
                 className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 "
@@ -242,6 +282,25 @@ function WorkoutHistoryModal(props) {
               </button>
             </div>
           </motion.div>
+          <ConfirmFinishModal
+            isOpen={isConfirmOpen}
+            onConfirm={handleDelete}
+            onCancel={() => setIsConfirmOpen(false)}
+            title="Delete workout?"
+            message={
+              <>
+                Are you sure you want to <strong>permanently </strong>delete the
+                completed workout dated on{" "}
+                <strong>
+                  {new Date(
+                    selectedCompletedWorkout?.date
+                  ).toLocaleDateString()}
+                  ?{" "}
+                </strong>
+              </>
+            }
+            action="Delete"
+          />
         </motion.div>
       )}
     </AnimatePresence>

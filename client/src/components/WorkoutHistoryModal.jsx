@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, easeInOut } from "framer-motion";
 import { useEffect } from "react";
 
 function WorkoutHistoryModal(props) {
@@ -13,6 +13,7 @@ function WorkoutHistoryModal(props) {
     useState(null);
   const [workouts, setWorkouts] = useState(null);
   const [completedWorkouts, setCompletedWorkouts] = useState(null);
+  const [error, setError] = useState("");
 
   const handleWorkoutClick = workout => {
     if (selectedWorkout?.id === workout.id) {
@@ -41,7 +42,7 @@ function WorkoutHistoryModal(props) {
 
         if (!workoutRes.ok || !completedRes.ok) {
           throw new Error(
-            `Failed to fetch data. Workouts: ${workoutRes.status} Completed: ${completedRes.status}`
+            `Failed to retrieve data. Workouts status: ${workoutRes.status} Completed status: ${completedRes.status}`
           );
         }
         const [workoutData, completedData] = await Promise.all([
@@ -55,10 +56,18 @@ function WorkoutHistoryModal(props) {
         setCompletedWorkouts(completedData);
       } catch (err) {
         console.error(err);
+        setError(err.message);
       }
     };
     fetchData();
   }, [isOpen]);
+
+  const triggerError = message => {
+    setError("");
+    requestAnimationFrame(() => {
+      setError(message);
+    });
+  };
 
   // Creates deleteWorkout button, if a deleted workout exists
   const workoutsArray = workouts || [];
@@ -117,7 +126,7 @@ function WorkoutHistoryModal(props) {
                   Filter by workout
                 </h2>
                 {combinedWorkouts.length === 0 ? (
-                  <p>No workouts to filter from</p>
+                  <p className="text-gray-500">No workouts to filter from</p>
                 ) : (
                   <ul className="space-y-2 ">
                     {combinedWorkouts.map(workout => (
@@ -196,6 +205,16 @@ function WorkoutHistoryModal(props) {
                 )}
               </div>
             </div>
+            <motion.p
+              className="text-red-500 text-sm mt-1 min-h-[18px] font-bold"
+              key={error}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, x: [0, -8, 8, -6, 6, -4, 4, 0] }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: easeInOut }}
+            >
+              {error || ""}
+            </motion.p>
             <div className="mt-6 flex justify-between gap-4">
               <button
                 className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
@@ -207,6 +226,8 @@ function WorkoutHistoryModal(props) {
                         state: { workout: selectedCompletedWorkout },
                       }
                     );
+                  } else {
+                    triggerError("Please select a completed workout");
                   }
                 }}
               >

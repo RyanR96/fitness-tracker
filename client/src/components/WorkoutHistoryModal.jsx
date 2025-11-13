@@ -242,9 +242,9 @@ function WorkoutHistoryModal(props) {
             >
               {error || ""}
             </motion.p>
-            <div className="mt-6 flex justify-between gap-4">
+            <div className="mt-6 flex flex-col sm:flex-row sm:justify-between items-center gap-3">
               <button
-                className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                className="w-full sm:w-auto bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
                 onClick={() => {
                   if (selectedCompletedWorkout) {
                     navigate(
@@ -271,11 +271,11 @@ function WorkoutHistoryModal(props) {
                   setIsConfirmOpen(true);
                 }}
               >
-                Delete Workout
+                Delete
               </button>
 
               <button
-                className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 "
+                className="w-full sm:w-auto bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
                 onClick={onClose}
               >
                 Close

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
 import ConfirmFinishModal from "./ConfirmFinishModal";
+import { toast } from "sonner";
 
 function StartWorkoutModal(props) {
   const { isOpen, onClose } = props;
@@ -94,9 +95,16 @@ function StartWorkoutModal(props) {
       setSelectedWorkout(null);
       setIsConfirmOpen(false);
       setError("");
+      toast.success("Workout succesfully deleted");
     } catch (err) {
       console.error(err);
       setError(err.message);
+      toast.error(
+        err.message === "Failed to fetch"
+          ? "Server did not respond. Please try again later"
+          : err.message
+      );
+      setIsConfirmOpen(false);
     }
   };
 
@@ -128,7 +136,9 @@ function StartWorkoutModal(props) {
                   Select Workout
                 </h2>
                 {workouts.length === 0 ? (
-                  <p>No workouts created, please create a workout</p>
+                  <p className="text-gray-500">
+                    No workouts created, please create a workout
+                  </p>
                 ) : (
                   <ul className="space-y-2">
                     {workouts.map(workout => (

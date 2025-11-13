@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
 import { useEffect } from "react";
 import ConfirmFinishModal from "./ConfirmFinishModal";
+import { toast } from "sonner";
 
 function WorkoutHistoryModal(props) {
   //const { isOpen, workouts, completedWorkouts, onClose } = props;
@@ -59,6 +60,11 @@ function WorkoutHistoryModal(props) {
       } catch (err) {
         console.error(err);
         setError(err.message);
+        toast.error(
+          err.message === "Failed to fetch"
+            ? "Server did not respond. Please try again later"
+            : err.message
+        );
       }
     };
     fetchData();
@@ -119,9 +125,16 @@ function WorkoutHistoryModal(props) {
       setSelectedCompletedWorkout(null);
       setIsConfirmOpen(false);
       setError("");
+      toast.success("Completed workout succesfully deleted");
     } catch (err) {
       console.error(err);
       setError(err.message);
+      toast.error(
+        err.message === "Failed to fetch"
+          ? "Server did not respond. Please try again later"
+          : err.message
+      );
+      setIsConfirmOpen(false);
     }
   };
   //if (!isOpen) return null;

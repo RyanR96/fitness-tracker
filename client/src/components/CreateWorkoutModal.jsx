@@ -6,6 +6,7 @@ import {
   LayoutGroup,
   easeInOut,
 } from "framer-motion";
+import { toast } from "sonner";
 
 function CreateWorkoutModal(props) {
   const { isOpen, onClose } = props;
@@ -114,9 +115,15 @@ function CreateWorkoutModal(props) {
       setSearchExercises("");
       setAllExercises([...fetchedExercises]);
       console.log("Workout created with data:", data);
+      toast.success("Workout succesfully created");
     } catch (err) {
       console.error("Error creating workout", err.message);
       setError(err.message);
+      toast.error(
+        err.message === "Failed to fetch"
+          ? "Server did not respond. Please try again later"
+          : err.message
+      );
 
       console.log(error);
     }

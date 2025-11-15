@@ -9,6 +9,7 @@ import CompletedWorkoutHistory from "./components/CompletedWorkoutHistory";
 import TrackWeight from "./components/TrackWeight";
 import Navbar from "./components/Navbar";
 import Layout from "./components/Layout";
+import NotFound from "./components/NotFound";
 
 function App() {
   return (
@@ -49,6 +50,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <TrackWeight />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute>
+                <NotFound message="Page not found" />
               </ProtectedRoute>
             }
           ></Route>

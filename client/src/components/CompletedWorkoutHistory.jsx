@@ -1,11 +1,14 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import NotFound from "./NotFound";
 
 function CompletedWorkoutHistory() {
   //const location = useLocation(); old way, keeping it in as reminder lol
   const { id } = useParams();
   const [completedWorkout, setCompletedWorkouts] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +25,11 @@ function CompletedWorkoutHistory() {
         );
 
         if (!res.ok) {
+          if (res.status === 404) {
+            setError("Workout not found");
+            return;
+          }
+
           throw new Error("Error fetching completed workout");
         }
 
@@ -30,12 +38,16 @@ function CompletedWorkoutHistory() {
         setCompletedWorkouts(data);
       } catch (err) {
         console.error(err.message);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
   }, [id]);
 
-  if (!completedWorkout) return <p>Loading workout</p>;
+  if (loading) return <p>Loading workout</p>;
+
+  if (error) return <NotFound message={error} />;
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col">

@@ -33,8 +33,12 @@ const getAllWorkouts = async (req, res) => {
 
 const getWorkoutById = async (req, res) => {
   try {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(404).json({ error: "Workout not found" });
+    }
     const workout = await prisma.workout.findFirst({
-      where: { id: parseInt(req.params.id), userId: req.user.id },
+      where: { id, userId: req.user.id },
       include: {
         exercises: {
           include: { exerciseTemplate: true },
@@ -42,6 +46,9 @@ const getWorkoutById = async (req, res) => {
         },
       },
     });
+    if (!workout) {
+      return res.status(404).json({ error: "Workout not found" });
+    }
     res.json(workout);
   } catch (err) {
     console.error(err);

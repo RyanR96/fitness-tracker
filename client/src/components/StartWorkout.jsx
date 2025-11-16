@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ConfirmFinishModal from "./ConfirmFinishModal";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import NotFound from "./NotFound";
 
 function StartWorkout() {
   const navigate = useNavigate();
@@ -11,6 +12,8 @@ function StartWorkout() {
   const [workout, setWorkout] = useState(null);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [exercise, setExercise] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   /**
    *  const workout = {
@@ -41,7 +44,12 @@ function StartWorkout() {
         });
 
         if (!res.ok) {
-          throw new Error(`Failed to fetch workout, response: ${res.status}`);
+          if (res.status === 404) {
+            setError("Workout not found");
+            return;
+          }
+
+          throw new Error("Error fetching completed workout");
         }
 
         const data = await res.json();
@@ -59,12 +67,17 @@ function StartWorkout() {
         setExercise(formattedWorkout.exercises);
       } catch (err) {
         console.error(err.message);
+      } finally {
+        setLoading(false);
       }
     };
     fetchWorkout();
   }, [id]);
 
-  if (!exercise) return <p>Loading workout</p>;
+  if (loading) return <p>Loading workout</p>;
+
+  if (error) return <NotFound message={error} />;
+
   const currentExercise = exercise[currentExerciseIndex];
 
   const handleSetChange = (setIndex, field, value) => {

@@ -31,7 +31,11 @@ const getCompletedWorkouts = async (req, res) => {
 
 const getCompletedWorkoutById = async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const id = Number(req.params.id);
+    if (id > 2147483647) {
+      return res.status(404).json({ error: "Invalid workout ID" });
+    }
+
     if (isNaN(id)) {
       return res.status(404).json({ error: "Workout not found" });
     }

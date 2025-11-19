@@ -4,6 +4,7 @@ import ConfirmFinishModal from "./ConfirmFinishModal";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import NotFound from "./NotFound";
+import { motion, AnimatePresence, easeInOut } from "framer-motion";
 
 function StartWorkout() {
   const navigate = useNavigate();
@@ -12,8 +13,9 @@ function StartWorkout() {
   const [workout, setWorkout] = useState(null);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [exercise, setExercise] = useState(null);
-  const [error, setError] = useState(null);
+  const [fetchError, setFetchError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   /**
    *  const workout = {
@@ -45,7 +47,7 @@ function StartWorkout() {
 
         if (!res.ok) {
           if (res.status === 404) {
-            setError("Workout not found");
+            setFetchError("Workout not found");
             return;
           }
 
@@ -76,7 +78,7 @@ function StartWorkout() {
 
   if (loading) return <p>Loading workout</p>;
 
-  if (error) return <NotFound message={error} />;
+  if (fetchError) return <NotFound message={fetchError} />;
 
   const currentExercise = exercise[currentExerciseIndex];
 
@@ -142,7 +144,12 @@ function StartWorkout() {
       ex => ex.sets.length > 0
     );
     if (filteredExercises.length === 0) {
-      alert("Please complete any set before finishing!!");
+      setError("");
+      requestAnimationFrame(() => {
+        setError("Please complete a set before finishing!!");
+      });
+
+      setIsConfirmOpen(false);
       return;
     }
 
@@ -192,7 +199,6 @@ function StartWorkout() {
           <h2 className="text-2x1 font-semibold mb-4 text-center">
             {currentExercise.exerciseTemplateName}
           </h2>
-
           {currentExercise.sets.map((s, i) => (
             <div
               key={i}
@@ -249,7 +255,6 @@ function StartWorkout() {
               </div>
             </div>
           ))}
-
           <div className="flex justify-between items-center mt-12 ">
             <button
               className="bg-green-500 text-black px-2 py-2 sm:px-6 py-2 rounded-full font-semibold hover:bg-green-300"
@@ -282,7 +287,17 @@ function StartWorkout() {
                 </button>
               )}
             </div>
-          </div>
+          </div>{" "}
+          <motion.p
+            className="text-red-500 text-sm mt-1 min-h-[18px] font-bold text-right"
+            key={error}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, x: [0, -8, 8, -6, 6, -4, 4, 0] }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: easeInOut }}
+          >
+            {error || ""}
+          </motion.p>
         </div>
       </div>
       <ConfirmFinishModal

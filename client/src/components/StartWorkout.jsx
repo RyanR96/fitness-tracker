@@ -252,14 +252,14 @@ function StartWorkout() {
 
           <div className="flex justify-between items-center mt-12 ">
             <button
-              className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+              className="bg-green-500 text-black px-2 py-2 sm:px-6 py-2 rounded-full font-semibold hover:bg-green-300"
               onClick={addSet}
             >
               Add set
             </button>
-            <div className="border-2 border-black">
+            <div className="">
               <button
-                className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                className="bg-green-500 text-black px-2 py-2 sm:px-6 rounded-full font-semibold hover:bg-green-300 mr-2"
                 onClick={handlePrev}
               >
                 Prev
@@ -267,14 +267,14 @@ function StartWorkout() {
 
               {currentExerciseIndex === exercise.length - 1 ? (
                 <button
-                  className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                  className="bg-green-500 text-black px-2 py-2 sm:px-6 py-2 rounded-full font-semibold hover:bg-green-300"
                   onClick={confirmFinish}
                 >
                   Finish
                 </button>
               ) : (
                 <button
-                  className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                  className="bg-green-500 text-black px-2 py-2 sm:px-6 py-2 rounded-full font-semibold hover:bg-green-300"
                   onClick={handleNext}
                 >
                   Next

@@ -179,7 +179,9 @@ function StartWorkout() {
       const data = await res.json();
       console.log("Workout saved", data);
       setExercise(workout.exercises);
-      navigate("/dashboard");
+      navigate("/dashboard", {
+        state: { workoutCompleted: true },
+      });
     } catch (err) {
       console.error(err.message);
     }

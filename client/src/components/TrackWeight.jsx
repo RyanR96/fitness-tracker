@@ -9,6 +9,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import ConfirmFinishModal from "./ConfirmFinishModal";
+import { motion, AnimatePresence, easeInOut } from "framer-motion";
 
 function TrackWeight() {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -17,6 +18,7 @@ function TrackWeight() {
   const [newDate, setNewData] = useState("");
   const [newWeight, setNewWeight] = useState("");
   const [entryToDelete, setEntryToDelete] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchWeight = async () => {
@@ -51,7 +53,10 @@ function TrackWeight() {
 
   const handleEntry = async () => {
     if (!newDate || !newWeight) {
-      alert("Please enter both date and weight");
+      setError("");
+      requestAnimationFrame(() => {
+        setError("Please enter both date and weight");
+      });
       return;
     }
 
@@ -176,19 +181,29 @@ function TrackWeight() {
             />
 
             <button
-              className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 md:col-span-2 justify-self-center"
+              className="bg-green-500 text-black px-6 py-2 rounded-full font-semibold hover:bg-green-300 md:col-span-2 justify-self-center"
               onClick={handleEntry}
             >
               Add weight
             </button>
           </div>
+          <motion.p
+            className="text-red-500 text-sm mt-1 min-h-[18px] font-bold text-center mt-10"
+            key={error}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, x: [0, -8, 8, -6, 6, -4, 4, 0] }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: easeInOut }}
+          >
+            {error || ""}
+          </motion.p>
         </div>
-        <div className="p-2 rounded-lg shadow border-2 border-dashed border-blue-500">
+        <div className="p-2 rounded-lg shadow">
           <h2 className="text-lg font-bold mb-6 text-center">Weight Entries</h2>
           {weightData === 0 ? (
             <p>No weight entries added yet</p>
           ) : (
-            <ul className="divide-y divide-gray-200 max-h-[400px] overflow-y-auto ">
+            <ul className="divide-y divide-gray-200 max-h-[400px] overflow-y-auto custom-scrollbar ">
               {weightData.map(entry => (
                 <li
                   key={entry.id}
@@ -206,7 +221,7 @@ function TrackWeight() {
                   </span>
 
                   <button
-                    className=" text-red-500 hover:text-red-700 font-semibold justify-self-end"
+                    className=" text-red-500 hover:text-red-700 font-semibold justify-self-end mr-5"
                     onClick={() => {
                       setIsConfirmOpen(true);
                       setEntryToDelete(entry);

@@ -60,6 +60,20 @@ function TrackWeight() {
       return;
     }
 
+    const duplicate = weightData.some(
+      entry =>
+        entry.date === new Date(newDate).getTime() &&
+        entry.weight === parseFloat(newWeight)
+    );
+
+    if (duplicate) {
+      setError("");
+      requestAnimationFrame(() => {
+        setError("You have already entered this weight entry");
+      });
+      return;
+    }
+
     try {
       const token = localStorage.getItem("token");
       const res = await fetch("http://localhost:3000/api/weightTracker/", {
@@ -92,6 +106,7 @@ function TrackWeight() {
       setWeightData(updatedData);
       setNewData("");
       setNewWeight("");
+      setError("");
     } catch (err) {
       console.error(err);
     }
@@ -131,6 +146,7 @@ function TrackWeight() {
               type="number"
               scale="time"
               domain={["auto", "auto"]}
+              allowDuplicatedCategory={false}
               tickFormatter={timestamp =>
                 new Date(timestamp).toLocaleDateString("en-GB", {
                   day: "2-digit",

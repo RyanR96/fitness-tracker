@@ -181,7 +181,7 @@ function TrackWeight() {
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[42vh]">
         <div className="p-4 rounded-lg shadow">
           <h2 className="text-lg font-bold mb-6 text-center">Add new weight</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-self-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10 justify-self-center">
             <input
               type="date"
               className="border px-3 py-2 rounded w-full md:w-auto"
@@ -255,8 +255,8 @@ function TrackWeight() {
             </ul>
           )}
           {weightData.length === 1 && (
-            <div className="flex flex-col items-center justify-center h-full">
-              <p className="mb-25 text-gray-500">
+            <div className="flex items-center justify-center">
+              <p className="text-gray-500 mt-15">
                 Add one more weight entry for the chart to generate.
               </p>
             </div>

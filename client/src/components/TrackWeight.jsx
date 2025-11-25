@@ -178,7 +178,7 @@ function TrackWeight() {
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[42vh]">
         <div className="p-4 rounded-lg shadow">
           <h2 className="text-lg font-bold mb-6 text-center">Add new weight</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-self-center">
@@ -216,8 +216,13 @@ function TrackWeight() {
         </div>
         <div className="p-2 rounded-lg shadow">
           <h2 className="text-lg font-bold mb-6 text-center">Weight Entries</h2>
-          {weightData === 0 ? (
-            <p>No weight entries added yet</p>
+          {weightData.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full">
+              <p className="text-gray-500">No weight entries added yet.</p>
+              <p className="text-gray-500 mb-25">
+                Please create an entry to see it appear here and in the graph.
+              </p>
+            </div>
           ) : (
             <ul className="divide-y divide-gray-200 max-h-[400px] overflow-y-auto custom-scrollbar ">
               {weightData.map(entry => (
@@ -248,6 +253,13 @@ function TrackWeight() {
                 </li>
               ))}
             </ul>
+          )}
+          {weightData.length === 1 && (
+            <div className="flex flex-col items-center justify-center h-full">
+              <p className="mb-25 text-gray-500">
+                Add one more weight entry for the chart to generate.
+              </p>
+            </div>
           )}
         </div>
         <ConfirmFinishModal

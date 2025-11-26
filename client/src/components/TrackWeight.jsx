@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import ConfirmFinishModal from "./ConfirmFinishModal";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
+import { toast } from "sonner";
 
 function TrackWeight() {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -107,8 +108,17 @@ function TrackWeight() {
       setNewData("");
       setNewWeight("");
       setError("");
+      toast.success("Weight entry succesfully added");
     } catch (err) {
       console.error(err);
+      setError("");
+      requestAnimationFrame(() => {
+        if (err.message === "Failed to fetch") {
+          setError("Server did not respond. Please try again later.");
+        } else {
+          setError(err.message);
+        }
+      });
     }
   };
 
@@ -128,8 +138,14 @@ function TrackWeight() {
       }
 
       setWeightData(prev => prev.filter(entry => entry.id !== id));
+      toast.success("Weight entry succesfully removed");
     } catch (err) {
       console.error(err.message);
+      toast.error(
+        err.message === "Failed to fetch"
+          ? "Server did not respond. Please try again later"
+          : err.message
+      );
     }
   };
 
@@ -224,7 +240,7 @@ function TrackWeight() {
               </p>
             </div>
           ) : (
-            <ul className="divide-y divide-gray-200 max-h-[400px] overflow-y-auto custom-scrollbar ">
+            <ul className="divide-y divide-gray-200 max-h-[310px] overflow-y-auto custom-scrollbar ">
               {weightData.map(entry => (
                 <li
                   key={entry.id}

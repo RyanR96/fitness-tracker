@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateAccountModal from "./CreateAccountModal";
+import { motion, AnimatePresence, easeInOut } from "framer-motion";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -32,7 +33,13 @@ function Login() {
       navigate("/dashboard");
     } catch (err) {
       console.error("Fetch failed", err);
-      setLoginError(err.message);
+      requestAnimationFrame(() => {
+        setLoginError(
+          err.message === "Failed to fetch"
+            ? "Server did not respond. Please try again later"
+            : err.message
+        );
+      });
     }
   };
 
@@ -56,7 +63,7 @@ function Login() {
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
             ></input>
             <button
-              className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 w-full"
+              className="bg-green-500 text-black px-6 py-2 rounded-full font-semibold hover:bg-green-300 w-full"
               type="submit"
             >
               Login
@@ -69,9 +76,17 @@ function Login() {
           >
             Create Account
           </button>
-          {loginError && (
-            <p className="mt-4 text-sm text-red-500">{loginError}</p>
-          )}
+
+          <motion.p
+            className="text-red-500 text-sm mt-1 min-h-[40px] font-bold"
+            key={loginError}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, x: [0, -8, 8, -6, 6, -4, 4, 0] }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: easeInOut }}
+          >
+            {loginError || ""}
+          </motion.p>
         </div>
         <div className="hidden md:block">
           <img

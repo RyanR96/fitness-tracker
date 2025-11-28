@@ -45,7 +45,7 @@ function Login() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4">
-      <div className="bg-white rounded-3xl shadow-xl w-full max-w-4xl grid grid-cols-1 md:grid-cols-2">
+      <div className="bg-white rounded-3xl shadow-xl w-full max-w-4xl grid grid-cols-1 sm:grid-cols-2">
         <div className="p-12 md:p-28 flex flex-col justify-center">
           <h1 className="text-3xl font-bold mb-6 text-center">Login Page</h1>
           <form className="space-y-4 text-center" onSubmit={handlesubmit}>
@@ -78,7 +78,7 @@ function Login() {
           </button>
 
           <motion.p
-            className="text-red-500 text-sm mt-1 min-h-[40px] font-bold"
+            className="text-red-500 text-sm mt-2 min-h-[40px] font-bold"
             key={loginError}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, x: [0, -8, 8, -6, 6, -4, 4, 0] }}
@@ -88,7 +88,7 @@ function Login() {
             {loginError || ""}
           </motion.p>
         </div>
-        <div className="hidden md:block">
+        <div className="hidden sm:block">
           <img
             className=" w-full h-full object-cover rounded-lg"
             src="https://cdn.pixabay.com/photo/2016/01/08/01/53/gymer-1126999_960_720.jpg"

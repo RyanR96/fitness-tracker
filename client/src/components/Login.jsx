@@ -44,7 +44,21 @@ function Login() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4 relative ">
+      <div className="absolute top-4 left-4 bg-white/70 border border-gray-300 rounded-xl shadow-sm p-3 space-y-1 px-5">
+        <h1 className="font-bold">Dummy account:</h1>
+        <p className="">Username: ryan</p>
+        <p>Password: 123</p>
+        <button
+          onClick={() => {
+            setUsername("ryan");
+            setPassword("123");
+          }}
+          className="bg-green-500 text-black rounded-full font-semibold hover:bg-green-300 w-full mt-1"
+        >
+          Autofill
+        </button>
+      </div>
       <div className="bg-white rounded-3xl shadow-xl w-full max-w-4xl grid grid-cols-1 sm:grid-cols-2">
         <div className="p-12 md:p-28 flex flex-col justify-center">
           <h1 className="text-3xl font-bold mb-6 text-center">Login Page</h1>

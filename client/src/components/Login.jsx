@@ -43,6 +43,21 @@ function Login() {
     }
   };
 
+  const handleAutofill = async () => {
+    setUsername("");
+    setPassword("");
+
+    const typeWriter = async (text, state) => {
+      for (let i = 0; i <= text.length; i++) {
+        state(text.slice(0, i));
+        await new Promise(res => setTimeout(res, 100));
+      }
+    };
+
+    await typeWriter("ryan", setUsername);
+    await typeWriter("123", setPassword);
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4 relative ">
       <div className="absolute top-4 left-4 bg-white/70 border border-gray-300 rounded-xl shadow-sm p-3 space-y-1 px-5">
@@ -50,10 +65,7 @@ function Login() {
         <p className="">Username: ryan</p>
         <p>Password: 123</p>
         <button
-          onClick={() => {
-            setUsername("ryan");
-            setPassword("123");
-          }}
+          onClick={handleAutofill}
           className="bg-green-500 text-black rounded-full font-semibold hover:bg-green-300 w-full mt-1"
         >
           Autofill

@@ -30,7 +30,9 @@ function Login() {
       }
       console.log(data);
       localStorage.setItem("token", data.token);
-      navigate("/dashboard");
+      navigate("/dashboard", {
+        state: { loginSuccesful: true },
+      });
     } catch (err) {
       console.error("Fetch failed", err);
       requestAnimationFrame(() => {

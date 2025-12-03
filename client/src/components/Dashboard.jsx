@@ -15,6 +15,9 @@ function Dashboard() {
     if (location.state?.workoutCompleted) {
       toast.success("Workout succesfully completed");
     }
+    if (location.state?.loginSuccesful) {
+      toast.success("Logged in succesfully ");
+    }
     history.replaceState({}, document.title);
   }, [location.state]);
 

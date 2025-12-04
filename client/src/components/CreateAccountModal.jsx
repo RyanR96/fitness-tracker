@@ -58,6 +58,7 @@ function CreateAccountModal(props) {
       setUsername("");
       setPassword("");
       setConfirmPassword("");
+      toast.success("Account succesfully created");
     } catch (err) {
       console.error("Failed", err);
       setErrors({ api: "Error, please try again later" });

@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, easeInOut } from "framer-motion";
+import { toast } from "sonner";
 
 function CreateAccountModal(props) {
   const { isOpen, onClose } = props;
@@ -12,6 +13,7 @@ function CreateAccountModal(props) {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    setErrors({});
 
     let newErrors = {};
 
@@ -20,7 +22,9 @@ function CreateAccountModal(props) {
     if (password !== confirmPassword)
       newErrors.confirmPassword = "Passwords do not match";
 
-    setErrors(newErrors);
+    requestAnimationFrame(() => {
+      setErrors(newErrors);
+    });
 
     if (Object.keys(newErrors).length > 0) {
       console.log("Hit the form validation error ");
@@ -50,7 +54,6 @@ function CreateAccountModal(props) {
         return;
       }
 
-      //succesful code goes here
       onClose();
       setUsername("");
       setPassword("");
@@ -102,9 +105,17 @@ function CreateAccountModal(props) {
                   className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
                 ></input>
 
-                <p className="text-red-500 text-sm mt-1 h-2">
+                <motion.p
+                  className="text-red-500 text-sm mt-1 h-2 font-semibold"
+                  key={errors.username}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, x: [0, -8, 8, -6, 6, -4, 4, 0] }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4, ease: easeInOut }}
+                >
+                  {" "}
                   {errors.username || " "}
-                </p>
+                </motion.p>
               </div>
               <div>
                 <input
@@ -114,9 +125,17 @@ function CreateAccountModal(props) {
                   placeholder="Password"
                   className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
                 ></input>
-                <p className="text-red-500 text-sm mt-1 h-2">
+                <motion.p
+                  className="text-red-500 text-sm mt-1 h-2 font-semibold"
+                  key={errors.password}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, x: [0, -8, 8, -6, 6, -4, 4, 0] }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4, ease: easeInOut }}
+                >
+                  {" "}
                   {errors.password || " "}
-                </p>
+                </motion.p>
               </div>
               <div>
                 <input
@@ -126,12 +145,19 @@ function CreateAccountModal(props) {
                   placeholder="Confirm Password"
                   className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent focus:ring-green-500"
                 ></input>
-                <p className="text-red-500 text-sm mt-1 h-2">
+                <motion.p
+                  className="text-red-500 text-sm mt-1 h-2 font-semibold"
+                  key={errors.confirmPassword || errors.api}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, x: [0, -8, 8, -6, 6, -4, 4, 0] }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4, ease: easeInOut }}
+                >
                   {errors.confirmPassword || " "} {errors.api || ""}
-                </p>
+                </motion.p>
               </div>
               <button
-                className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 w-full"
+                className="bg-green-500 text-black px-6 py-1 rounded-full font-semibold hover:bg-green-300 w-full"
                 type="submit"
               >
                 Sign up

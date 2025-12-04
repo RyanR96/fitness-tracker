@@ -78,14 +78,20 @@ function CreateAccountModal(props) {
           transition={{ duration: 0.1 }}
         >
           <motion.div
-            className="relative bg-white p-6 rounded-2xl shadow-lg h-[50%]"
+            className="relative bg-white p-6 rounded-2xl shadow-lg h-[50%] p-10"
             initial={{ y: 50 }}
             animate={{ y: 0 }}
             exit={{ y: 50 }}
             transition={{ duration: 0.4 }}
           >
             <button
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+                setConfirmPassword("");
+                setPassword("");
+                setUsername("");
+                setErrors({});
+              }}
               className="absolute top-0 right-0 mt-2 mr-2 text-lg text-gray-500 hover:text-gray-800 "
             >
               X

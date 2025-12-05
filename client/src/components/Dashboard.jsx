@@ -43,56 +43,64 @@ function Dashboard() {
         </div>
       </div>
       <div className=" bg-gray-900 text-white p-10 flex-1">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto mt-5">
           {/* Card 1*/}
-          <div className="bg-[#2A2A2A] rounded-xl p-6 text-white text-center">
-            <h3 className="text-xl font-bold mb-1">Create a Workout</h3>
+          <div className="bg-[#2A2A2A] rounded-xl p-6 text-white text-center flex flex-col h-full">
+            <h3 className="text-xl font-bold mb-1 min-h-[48px] leading-none ">
+              Create a Workout
+            </h3>
             <p className="text-sm text-gray-400 mb-4">
               Create a workout from our list of exercises
             </p>
             <button
               onClick={() => setIsCreateWorkoutModalOpen(true)}
-              className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+              className="h-13 w-full max-w-[350px] mx-auto bg-green-500 text-black px-6 py-1 rounded-full font-semibold hover:bg-green-300 mt-auto"
             >
               Create Workout
             </button>
           </div>
           {/* Card 2*/}
-          <div className="bg-[#2A2A2A] rounded-xl p-6 text-white text-center">
-            <h3 className="text-xl font-bold mb-1">Start a Workout</h3>
+          <div className="bg-[#2A2A2A] rounded-xl p-6 text-white text-center flex flex-col h-full">
+            <h3 className="text-xl font-bold mb-1 min-h-[48px] leading-none">
+              Start a Workout
+            </h3>
             <p className="text-sm text-gray-400 mb-4">
               Start a workout from a list of your workouts
             </p>
             <button
               onClick={() => setIsStartWorkoutModalOpen(true)}
-              className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+              className="h-13 w-full max-w-[350px] mx-auto bg-green-500 text-black px-6 py-1 rounded-full font-semibold hover:bg-green-300 mt-auto"
             >
               Start Workout
             </button>
           </div>
           {/* Card 3*/}
 
-          <div className="bg-[#2A2A2A] rounded-xl p-6 text-white text-center">
-            <h3 className="text-xl font-bold mb-1">Workout History</h3>
+          <div className="bg-[#2A2A2A] rounded-xl p-6 text-white text-center flex flex-col h-full">
+            <h3 className="text-xl font-bold mb-1 min-h-[48px] leading-none">
+              Workout History
+            </h3>
             <p className="text-sm text-gray-400 mb-4">
-              Check your previous completed workouts
+              Check previous completed workouts
             </p>
             <button
-              className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+              className="h-13 w-full max-w-[350px] mx-auto bg-green-500 text-black px-6 py-1 rounded-full font-semibold hover:bg-green-300 mt-auto"
               onClick={() => setIsHistoryOpen(true)}
             >
               Workout history
             </button>
           </div>
 
-          {/* Card 3*/}
-          <div className="bg-[#2A2A2A] rounded-xl p-6 text-white text-center">
-            <h3 className="text-xl font-bold mb-1">Track your weight</h3>
+          {/* Card 4*/}
+          <div className="bg-[#2A2A2A] rounded-xl p-6 text-white text-center flex flex-col h-full">
+            <h3 className="text-xl font-bold mb-1 min-h-[48px] leading-none">
+              Track your weight
+            </h3>
             <p className="text-sm text-gray-400 mb-4">
               Track your own weight in chart form
             </p>
             <button
-              className="bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+              className="h-13 w-full max-w-[350px] mx-auto bg-green-500 text-black px-6 py-1 rounded-full font-semibold hover:bg-green-300 mt-auto"
               onClick={() => navigate("/trackWeight")}
             >
               Track weight

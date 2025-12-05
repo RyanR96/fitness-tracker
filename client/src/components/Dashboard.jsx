@@ -10,7 +10,13 @@ import { useLocation } from "react-router-dom";
 function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isCreateWorkoutModalOpen, setIsCreateWorkoutModalOpen] =
+    useState(false);
 
+  const [isStartWorkoutModalOpen, setIsStartWorkoutModalOpen] = useState(false);
+
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [introText, setIntroText] = useState("");
   useEffect(() => {
     if (location.state?.workoutCompleted) {
       toast.success("Workout succesfully completed");
@@ -21,12 +27,19 @@ function Dashboard() {
     history.replaceState({}, document.title);
   }, [location.state]);
 
-  const [isCreateWorkoutModalOpen, setIsCreateWorkoutModalOpen] =
-    useState(false);
+  useEffect(() => {
+    const text =
+      "Welcome to MyFitnessApp {username}, your fitness journey begins here.";
+    let i = 0;
 
-  const [isStartWorkoutModalOpen, setIsStartWorkoutModalOpen] = useState(false);
+    const interval = setInterval(() => {
+      setIntroText(text.slice(0, i + 1));
+      i++;
+      if (i === text.length) clearInterval(interval);
+    }, 40);
 
-  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -39,7 +52,7 @@ function Dashboard() {
         }}
       >
         <div>
-          <h1>HELLOHELLOHELLOHELLOHELLOHELLOHELLO</h1>
+          <h1 className="text-3xl">{introText}</h1>
         </div>
       </div>
       <div className=" bg-gray-900 text-white p-10 flex-1">

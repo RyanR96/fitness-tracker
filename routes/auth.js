@@ -2,6 +2,7 @@ const express = require("express");
 const prisma = require("../client");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const verifyToken = require("../middleware/verifyToken");
 
 const router = express.Router();
 
@@ -61,6 +62,20 @@ router.post("/signup", async (req, res) => {
     res.json({ token });
   } catch (err) {
     res.send(err.message);
+  }
+});
+
+router.get("/me", verifyToken, async (req, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      select: { id: true, username: true },
+    });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 

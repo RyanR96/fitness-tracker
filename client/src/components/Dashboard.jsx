@@ -17,6 +17,8 @@ function Dashboard() {
 
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [introText, setIntroText] = useState("");
+  const [username, setUsername] = useState(null);
+
   useEffect(() => {
     if (location.state?.workoutCompleted) {
       toast.success("Workout succesfully completed");
@@ -28,8 +30,32 @@ function Dashboard() {
   }, [location.state]);
 
   useEffect(() => {
-    const text =
-      "Welcome to MyFitnessApp {username}, your fitness journey begins here.";
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://localhost:3000/auth/me", {
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error(`Failed to fetch user data`);
+        }
+
+        const data = await res.json();
+
+        setUsername(data.username);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    if (!username) return;
+    const text = `Welcome to MyFitnessApp ${username}, your fitness journey begins here`;
     let i = 0;
 
     const interval = setInterval(() => {
@@ -39,7 +65,7 @@ function Dashboard() {
     }, 40);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [username]);
 
   return (
     <div className="min-h-screen flex flex-col">

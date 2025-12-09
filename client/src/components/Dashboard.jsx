@@ -77,8 +77,10 @@ function Dashboard() {
           backgroundImage: `url(https://cdn.pixabay.com/photo/2016/01/08/01/53/gymer-1126999_960_720.jpg)`,
         }}
       >
-        <div>
-          <h1 className="text-3xl">{introText}</h1>
+        <div className="max-w-[600px] px-4 text-center">
+          <h1 className="text-3xl font-bold text-white [text-shadow:_0_2px_8px_rgba(0,0,0,0.7)]">
+            {introText}
+          </h1>
         </div>
       </div>
       <div className=" bg-gray-900 text-white p-10 flex-1">

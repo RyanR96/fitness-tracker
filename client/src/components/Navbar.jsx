@@ -23,21 +23,21 @@ function Navbar() {
       </div>
 
       <button
-        className=" hidden sm:flex bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 md:col-span-2 justify-self-center"
+        className=" hidden sm:flex bg-green-500 text-black px-6 py-2 rounded-full font-semibold hover:bg-green-300 md:col-span-2 justify-self-center"
         onClick={handleLogout}
       >
         Logout
       </button>
 
       <button
-        className="sm:hidden flex bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300 md:col-span-2 justify-self-center"
+        className="sm:hidden flex bg-green-500 text-black px-6 py-2 rounded-full font-semibold hover:bg-green-300 md:col-span-2 justify-self-center"
         onClick={() => setIsOpen(!isOpen)}
       >
         ☰
       </button>
 
       {isOpen && (
-        <div className="sm:hidden absolute top-15 right-0  bg-gray-800  ">
+        <div className="sm:hidden absolute top-15 right-0 bg-gray-800 z-50">
           <ul className="space-y-2 font-bold z-50">
             <li className="">
               <Link

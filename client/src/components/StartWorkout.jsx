@@ -204,15 +204,15 @@ function StartWorkout() {
           {currentExercise.sets.map((s, i) => (
             <div
               key={i}
-              className="grid grid-cols-1 lg:grid-cols-5 sm:grid-cols-2 gap-4 mb-4 items-center"
+              className="grid grid-cols-1 lg:grid-cols-5 sm:grid-cols-2 gap-4 mb-4 items-center bg-white p-4 rounded-xl shadow-sm border border-gray-200"
             >
-              <div className="flex items-center justify-center font-semibold sm:col-span-2 lg:col-span-1">
+              <div className="flex items-center justify-center font-semibold sm:col-span-2 lg:col-span-1 text-center">
                 Set {i + 1}:
               </div>
               <div className="flex items-center space-x-3">
                 <label className="block mb-1">Weight:</label>
                 <input
-                  className="w-20 border rounded px-3 py-2"
+                  className="w-20 border rounded px-3 py-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-400 focus:outline-none"
                   type="number"
                   value={s.weight}
                   onChange={e => handleSetChange(i, "weight", e.target.value)}
@@ -221,7 +221,7 @@ function StartWorkout() {
               <div className="flex items-center space-x-7">
                 <label className="block mb-1">Reps:</label>
                 <input
-                  className="w-20 border rounded px-3 py-2"
+                  className="w-20 border rounded px-3 py-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-400 focus:outline-none"
                   type="number"
                   value={s.reps}
                   onChange={e => handleSetChange(i, "reps", e.target.value)}
@@ -230,7 +230,7 @@ function StartWorkout() {
               <div className="flex items-center gap-6 space-x-0.5">
                 <label className="block mb-1">Form:</label>
                 <input
-                  className="w-20 border rounded px-3 py-2"
+                  className="w-20 border rounded px-3 py-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-400 focus:outline-none"
                   type="number"
                   min={1}
                   max={10}
@@ -247,7 +247,7 @@ function StartWorkout() {
               <div className="flex items-center gap-6">
                 <label className="mr-1">Dropset:</label>
                 <input
-                  className="w-20 h-10"
+                  className="w-20 h-10 accent-green-500"
                   type="checkbox"
                   checked={s.dropSet}
                   onChange={e =>

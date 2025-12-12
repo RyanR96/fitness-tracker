@@ -194,14 +194,14 @@ function StartWorkoutModal(props) {
             </motion.p>
             <div className="mt-6 flex flex-col sm:flex-row sm:justify-between items-center gap-3">
               <button
-                className="w-full sm:w-auto bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                className="w-full sm:w-auto bg-green-500 text-black px-6 py-1 rounded-full font-semibold hover:bg-green-300"
                 onClick={handleStart}
               >
                 Start Workout
               </button>
 
               <button
-                className="w-full sm:w-auto bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                className="w-full sm:w-auto bg-green-500 text-black px-6 py-1  rounded-full font-semibold hover:bg-green-300"
                 onClick={() => {
                   setError("");
                   if (!selectedWorkout) {
@@ -218,7 +218,7 @@ function StartWorkoutModal(props) {
               </button>
 
               <button
-                className="w-full sm:w-auto bg-green-500 text-black px-6 py 2 rounded-full font-semibold hover:bg-green-300"
+                className="w-full sm:w-auto bg-green-500 text-black px-6 py-1  rounded-full font-semibold hover:bg-green-300"
                 onClick={handleClose}
               >
                 Close

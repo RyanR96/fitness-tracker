@@ -126,13 +126,13 @@ function StartWorkoutModal(props) {
             exit={{ y: 50 }}
             transition={{ duration: 0.4 }}
           >
-            <h2 className="text-xl font-semibold mb-4 text-center">
+            <h2 className="md:text-xl text-lg font-semibold mb-4 text-center">
               Start Workout
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 overflow-hidden h-full">
               {/**Left side of the column */}
               <div className="border p-4 rounded overflow-auto custom-scrollbar">
-                <h2 className="text-xl font-semibold mb-4 text-center">
+                <h2 className="md:text-xl text-base font-semibold mb-4 text-center">
                   Select Workout
                 </h2>
                 {workouts.length === 0 ? (
@@ -145,7 +145,7 @@ function StartWorkoutModal(props) {
                       <li key={workout.id}>
                         <button
                           onClick={() => setSelectedWorkout(workout)}
-                          className={`w-full text-left px-4 py-2 rounded-lg hover:shadow-lg transitions-colors duration-182 ${
+                          className={`w-full text-left md:px-4 md:py-2 px-1 py-1 rounded-lg hover:shadow-lg transitions-colors duration-182 ${
                             selectedWorkout?.id === workout.id
                               ? "bg-green-500 text-white"
                               : "bg-gray-100 hover:bg-green-200"
@@ -161,7 +161,7 @@ function StartWorkoutModal(props) {
 
               {/**Right side of the column */}
               <div className="border p-4 rounded overflow-y-auto custom-scrollbar">
-                <h2 className="text-xl font-semibold mb-4 text-center">
+                <h2 className="md:text-xl text-base font-semibold mb-4 text-center">
                   Exercises
                 </h2>
                 {selectedWorkout ? (
@@ -169,7 +169,7 @@ function StartWorkoutModal(props) {
                     {selectedWorkout.exercises.map(ex => (
                       <li
                         key={ex}
-                        className="p-2 bg-gray-100 rounded-md shadow-sm"
+                        className="md:px-4 md:py-2 px-1 py-1 bg-gray-100 rounded-lg shadow-sm"
                       >
                         {ex}
                       </li>
@@ -192,7 +192,7 @@ function StartWorkoutModal(props) {
             >
               {error || ""}
             </motion.p>
-            <div className="mt-6 flex flex-col sm:flex-row sm:justify-between items-center gap-3">
+            <div className="mt-2 flex flex-col sm:flex-row sm:justify-between items-center gap-2">
               <button
                 className="w-full sm:w-auto bg-green-500 text-black px-6 sm:py-1 rounded-full font-semibold hover:bg-green-300"
                 onClick={handleStart}
@@ -201,7 +201,7 @@ function StartWorkoutModal(props) {
               </button>
 
               <button
-                className="w-full sm:w-auto bg-green-500 text-black px-6 sm:py-1  rounded-full font-semibold hover:bg-green-300"
+                className="w-full sm:w-auto bg-green-500 text-black px-6 sm:py-1 rounded-full font-semibold hover:bg-green-300"
                 onClick={() => {
                   setError("");
                   if (!selectedWorkout) {

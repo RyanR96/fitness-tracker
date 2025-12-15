@@ -201,63 +201,66 @@ function StartWorkout() {
           <h2 className="text-2x1 font-semibold mb-4 text-center">
             {currentExercise.exerciseTemplateName}
           </h2>
-          {currentExercise.sets.map((s, i) => (
-            <div
-              key={i}
-              className="grid grid-cols-1 lg:grid-cols-5 sm:grid-cols-2 gap-4 mb-4 items-center bg-white p-4 rounded-xl shadow-sm border border-gray-200"
-            >
-              <div className="flex items-center justify-center font-semibold sm:col-span-2 lg:col-span-1 text-center">
-                Set {i + 1}:
+          <div className="max-h-[75vh] pr-2 overflow-y-auto custom-scrollbar">
+            {currentExercise.sets.map((s, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-1 lg:grid-cols-5 sm:grid-cols-2 gap-4 mb-4 items-center bg-white p-4 rounded-xl shadow-sm border border-gray-200"
+              >
+                <div className="flex items-center justify-center font-semibold sm:col-span-2 lg:col-span-1 text-center">
+                  Set {i + 1}:
+                </div>
+                <div className="flex items-center space-x-3">
+                  <label className="block mb-1">Weight:</label>
+                  <input
+                    className="w-20 border rounded px-3 py-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-400 focus:outline-none"
+                    type="number"
+                    value={s.weight}
+                    onChange={e => handleSetChange(i, "weight", e.target.value)}
+                  />
+                </div>
+                <div className="flex items-center space-x-7">
+                  <label className="block mb-1">Reps:</label>
+                  <input
+                    className="w-20 border rounded px-3 py-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-400 focus:outline-none"
+                    type="number"
+                    value={s.reps}
+                    onChange={e => handleSetChange(i, "reps", e.target.value)}
+                  />
+                </div>
+                <div className="flex items-center gap-6 space-x-0.5">
+                  <label className="block mb-1">Form:</label>
+                  <input
+                    className="w-20 border rounded px-3 py-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-400 focus:outline-none"
+                    type="number"
+                    min={1}
+                    max={10}
+                    value={s.formRating}
+                    onChange={e => {
+                      const value = Math.max(
+                        1,
+                        Math.min(10, Number(e.target.value))
+                      );
+                      handleSetChange(i, "formRating", value);
+                    }}
+                  />
+                </div>
+
+                <div className="flex items-center gap-6">
+                  <label className="mr-1">Dropset:</label>
+                  <input
+                    className="w-20 h-10 accent-green-500"
+                    type="checkbox"
+                    checked={s.dropSet}
+                    onChange={e =>
+                      handleSetChange(i, "dropSet", e.target.checked)
+                    }
+                  />
+                </div>
               </div>
-              <div className="flex items-center space-x-3">
-                <label className="block mb-1">Weight:</label>
-                <input
-                  className="w-20 border rounded px-3 py-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-400 focus:outline-none"
-                  type="number"
-                  value={s.weight}
-                  onChange={e => handleSetChange(i, "weight", e.target.value)}
-                />
-              </div>
-              <div className="flex items-center space-x-7">
-                <label className="block mb-1">Reps:</label>
-                <input
-                  className="w-20 border rounded px-3 py-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-400 focus:outline-none"
-                  type="number"
-                  value={s.reps}
-                  onChange={e => handleSetChange(i, "reps", e.target.value)}
-                />
-              </div>
-              <div className="flex items-center gap-6 space-x-0.5">
-                <label className="block mb-1">Form:</label>
-                <input
-                  className="w-20 border rounded px-3 py-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-400 focus:outline-none"
-                  type="number"
-                  min={1}
-                  max={10}
-                  value={s.formRating}
-                  onChange={e => {
-                    const value = Math.max(
-                      1,
-                      Math.min(10, Number(e.target.value))
-                    );
-                    handleSetChange(i, "formRating", value);
-                  }}
-                />
-              </div>
-              <div className="flex items-center gap-6">
-                <label className="mr-1">Dropset:</label>
-                <input
-                  className="w-20 h-10 accent-green-500"
-                  type="checkbox"
-                  checked={s.dropSet}
-                  onChange={e =>
-                    handleSetChange(i, "dropSet", e.target.checked)
-                  }
-                />
-              </div>
-            </div>
-          ))}
-          <div className="flex justify-between items-center mt-12 ">
+            ))}
+          </div>
+          <div className="sticky bottom-0 flex justify-between items-center mt-12 ">
             <button
               className="bg-green-500 text-black px-2 py-2 sm:px-6 py-2 rounded-full font-semibold hover:bg-green-300"
               onClick={addSet}

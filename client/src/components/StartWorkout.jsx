@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ConfirmFinishModal from "./ConfirmFinishModal";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { useRef } from "react";
 import NotFound from "./NotFound";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
 
@@ -16,6 +17,7 @@ function StartWorkout() {
   const [fetchError, setFetchError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const setsRef = useRef();
 
   /**
    *  const workout = {
@@ -75,12 +77,16 @@ function StartWorkout() {
     };
     fetchWorkout();
   }, [id]);
+  const currentExercise = exercise?.[currentExerciseIndex];
+
+  useEffect(() => {
+    if (!currentExercise) return;
+    setsRef.current?.scrollIntoView({ behaviour: "smooth" });
+  }, [currentExercise?.sets.length]);
 
   if (loading) return <p>Loading workout</p>;
 
   if (fetchError) return <NotFound message={fetchError} />;
-
-  const currentExercise = exercise[currentExerciseIndex];
 
   const handleSetChange = (setIndex, field, value) => {
     setExercise(prev => {
@@ -91,11 +97,12 @@ function StartWorkout() {
   };
 
   const addSet = () => {
+    /** 
     if (currentExercise.sets.length >= 10) {
       alert("Too many sets!");
       return;
     }
-
+*/
     console.log("exercise", exercise);
     console.log("current exercise", currentExercise);
     console.log("current exercise index", currentExerciseIndex);
@@ -204,6 +211,7 @@ function StartWorkout() {
           <div className="max-h-[75vh] pr-2 overflow-y-auto custom-scrollbar">
             {currentExercise.sets.map((s, i) => (
               <div
+                ref={setsRef}
                 key={i}
                 className="grid grid-cols-1 lg:grid-cols-5 sm:grid-cols-2 gap-4 mb-4 items-center bg-white p-4 rounded-xl shadow-sm border border-gray-200"
               >
@@ -260,7 +268,7 @@ function StartWorkout() {
               </div>
             ))}
           </div>
-          <div className="sticky bottom-0 flex justify-between items-center mt-12 ">
+          <div className="flex justify-between items-center mt-12 ">
             <button
               className="bg-green-500 text-black px-2 py-2 sm:px-6 py-2 rounded-full font-semibold hover:bg-green-300"
               onClick={addSet}

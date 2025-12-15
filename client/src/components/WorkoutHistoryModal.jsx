@@ -156,13 +156,13 @@ function WorkoutHistoryModal(props) {
             exit={{ y: 50 }}
             transition={{ duration: 0.4 }}
           >
-            <h2 className="text-xl font-semibold mb-4 text-center">
+            <h2 className="md:text-xl text-lg font-semibold mb-4 text-center">
               View workout history
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 overflow-hidden justify-center h-full">
               {/**Left side of the column */}
               <div className="border p-4 rounded overflow-auto col-span-1 sm:col-span-1 custom-scrollbar">
-                <h2 className="text-xl font-semibold mb-4 text-center">
+                <h2 className="md:text-xl text-base font-semibold mb-4 text-center">
                   Filter by workout
                 </h2>
                 {combinedWorkouts.length === 0 ? (
@@ -173,7 +173,7 @@ function WorkoutHistoryModal(props) {
                       <li key={workout.id}>
                         <button
                           onClick={() => handleWorkoutClick(workout)}
-                          className={`w-full text-left px-4 py-2 rounded-lg hover:shadow-lg transitions-colors duration-182 ${
+                          className={`w-full text-left md:px-4 md:py-2 px-1 py-1 rounded-lg hover:shadow-lg transitions-colors duration-182 ${
                             selectedWorkout?.id === workout.id
                               ? "bg-green-500 text-white"
                               : "bg-gray-100 hover:bg-green-200"
@@ -189,7 +189,7 @@ function WorkoutHistoryModal(props) {
 
               {/**Right side of the column */}
               <div className="border p-4 rounded col-span-1 sm:col-span-2 overflow-auto custom-scrollbar">
-                <h2 className="text-xl font-semibold mb-4 text-center ">
+                <h2 className="md:text-xl text-base font-semibold mb-4 text-center ">
                   Workout history
                 </h2>
                 {selectedWorkout ? (
@@ -198,7 +198,7 @@ function WorkoutHistoryModal(props) {
                       {filterByWorkout.map(cw => (
                         <li key={cw.id}>
                           <button
-                            className={`w-full text-left px-4 py-2 rounded-lg hover:shadow-lg transitions-colors duration-182 ${
+                            className={`w-full text-left  md:px-4 md:py-2 px-1 py-1 rounded-lg hover:shadow-lg transitions-colors duration-182 ${
                               selectedCompletedWorkout?.id === cw.id
                                 ? "bg-green-500 text-white"
                                 : "bg-gray-100 hover:bg-green-200"
@@ -221,7 +221,7 @@ function WorkoutHistoryModal(props) {
                     {completedWorkouts.map(cw => (
                       <li key={cw.id}>
                         <button
-                          className={`w-full text-left px-4 py-2 rounded-lg hover:shadow-lg transitions-colors duration-182 ${
+                          className={`w-full text-left md:px-4 md:py-2 px-1 py-1 rounded-lg hover:shadow-lg transitions-colors duration-182 ${
                             selectedCompletedWorkout?.id === cw.id
                               ? "bg-green-500 text-white"
                               : "bg-gray-100 hover:bg-green-200"
@@ -255,9 +255,9 @@ function WorkoutHistoryModal(props) {
             >
               {error || ""}
             </motion.p>
-            <div className="mt-6 flex flex-col sm:flex-row sm:justify-between items-center gap-3">
+            <div className="mt-2 flex flex-col sm:flex-row sm:justify-between items-center gap-2">
               <button
-                className="w-full sm:w-auto bg-green-500 text-black px-6 sm:py-1   rounded-full font-semibold hover:bg-green-300"
+                className="w-full sm:w-auto bg-green-500 text-black px-6 sm:py-1 rounded-full font-semibold hover:bg-green-300"
                 onClick={() => {
                   if (selectedCompletedWorkout) {
                     navigate(

@@ -148,7 +148,7 @@ function CreateWorkoutModal(props) {
             exit={{ y: 50 }}
             transition={{ duration: 0.4 }}
           >
-            <h2 className="text-xl font-semibold mb-4 text-center">
+            <h2 className="md:text-xl text-lg font-semibold mb-4 text-center">
               Create Workout
             </h2>
             <LayoutGroup>
@@ -178,7 +178,7 @@ function CreateWorkoutModal(props) {
                             key={ex.id}
                             value={ex}
                             layoutId={ex.id}
-                            className="rounded-xl flex justify-between items-center py-1 px-3 bg-gray-100 rounded shadow-sm cursor-grab actve:cursor-grabbing"
+                            className="rounded-xl flex justify-between items-center  md:px-4 md:py-2 px-1 py-1 bg-gray-100 rounded shadow-sm cursor-grab actve:cursor-grabbing"
                             dragConstraints={{ top: 0, bottom: 0 }}
                             whileTap={{ scale: 0.96 }}
                           >
@@ -198,7 +198,7 @@ function CreateWorkoutModal(props) {
 
                 {/**Right side of the column */}
                 <div className="border  p-4 rounded overflow-y-auto custom-scrollbar sm:col-span-2">
-                  <h2 className="text-xl font-semibold mb-4 text-center">
+                  <h2 className="md:text-xl text-lg font-semibold mb-4 text-center">
                     Exercises
                   </h2>
                   <input
@@ -211,7 +211,7 @@ function CreateWorkoutModal(props) {
                   <ul className="grid grid-cols-2 gap-2 overflow-y">
                     {searchedExercises.map(ex => (
                       <motion.li
-                        className="bg-gray-100 shadow rounded-xl hover:shadow-lg hover:bg-green-200 transitions-colors duration-182 transition cursor-pointer py-1 rounded px-2"
+                        className="bg-gray-100 shadow rounded-xl hover:shadow-lg hover:bg-green-200 transitions-colors duration-182 transition cursor-pointer  md:px-4 md:py-2 px-1 py-1 rounded "
                         key={ex.id}
                         layoutId={ex.id}
                         transition={{ duration: 0 }}
@@ -237,7 +237,7 @@ function CreateWorkoutModal(props) {
               {error || ""}
             </motion.p>
 
-            <div className="mt-6 flex justify-between gap-4">
+            <div className="mt-2 flex justify-between gap-2">
               <button
                 className="bg-green-500 text-black px-6 py-1 rounded-full font-semibold hover:bg-green-300"
                 onClick={handleCreate}

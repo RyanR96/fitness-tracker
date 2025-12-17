@@ -81,7 +81,7 @@ function StartWorkout() {
 
   useEffect(() => {
     if (!currentExercise) return;
-    setsRef.current?.scrollIntoView({ behaviour: "smooth" });
+    setsRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [currentExercise?.sets.length]);
 
   if (loading) return <p>Loading workout</p>;
@@ -92,6 +92,7 @@ function StartWorkout() {
     setExercise(prev => {
       const newData = [...prev];
       newData[currentExerciseIndex].sets[setIndex][field] = value;
+      console.log(newData);
       return newData;
     });
   };

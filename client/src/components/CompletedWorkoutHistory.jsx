@@ -69,16 +69,18 @@ function CompletedWorkoutHistory() {
                 {exercise.set.map((set, i) => (
                   <li
                     key={i}
-                    className="p-2 bg-gray-100 rounded flex flex-wrap justify-around"
+                    className="grid grid-cols-2 sm:grid-cols-4 text-center items-center bg-gray-100 px-2 "
                   >
                     <span className="p-2 ">
                       <strong>Set {i + 1}:</strong>
                     </span>
-                    <span className="p-2">
+                    <span className="p-2 font-mono">
                       {set.weight}kg x {set.reps} reps
                     </span>
-                    <span className="p-2">Form: {set.formRating}</span>
-                    <span className="p-2">
+                    <span className="p-2 font-mono">
+                      Form: {set.formRating}
+                    </span>
+                    <span className="p-2 font-mono">
                       {set.dropset ? "Dropset" : "Normal"}
                     </span>
                   </li>

@@ -89,6 +89,7 @@ function StartWorkout() {
   if (fetchError) return <NotFound message={fetchError} />;
 
   const handleSetChange = (setIndex, field, value) => {
+    /**  */
     setExercise(prev => {
       const newData = [...prev];
       newData[currentExerciseIndex].sets[setIndex][field] = value;
@@ -144,7 +145,7 @@ function StartWorkout() {
           weight: parseFloat(s.weight),
           reps: parseFloat(s.reps),
           formRating: parseInt(s.formRating),
-          dropSet: s.dropSet ?? false,
+          dropset: s.dropSet ?? false,
         })),
     }));
 

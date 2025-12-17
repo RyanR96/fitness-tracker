@@ -79,7 +79,7 @@ function CompletedWorkoutHistory() {
                     </span>
                     <span className="p-2">Form: {set.formRating}</span>
                     <span className="p-2">
-                      {set.dropSet ? "Dropset" : "Normal"}
+                      {set.dropset ? "Dropset" : "Normal"}
                     </span>
                   </li>
                 ))}

@@ -72,9 +72,9 @@ function CompletedWorkoutHistory() {
                 {exercise.set.map((set, i) => (
                   <li
                     key={i}
-                    className="grid grid-cols-2 sm:grid-cols-4 text-center items-center bg-gray-100 px-2 mr-6 "
+                    className="grid grid-cols-2 sm:grid-cols-4 items-center text-center gap-1 mb-1 bg-white md:p-1 rounded-xl shadow-sm border border-gray-200 mr-2 "
                   >
-                    {/**gap-1 mb-1 items-center bg-white px-2 rounded-xl shadow-sm border border-gray-200  Either this or the one above, both look nice imo*/}
+                    {/** text-center items-center bg-gray-100 px-2 gap-1 mb-1 Either this or the one above, both look nice imo*/}
                     <span className="p-2 ">
                       <strong>Set {i + 1}:</strong>
                     </span>

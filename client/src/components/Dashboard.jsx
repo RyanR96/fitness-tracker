@@ -72,7 +72,7 @@ function Dashboard() {
       {" "}
       {/* flex flex-col and flex-1 later on ensures is 100% height (for when I forget) */}
       <div
-        className="h-[50vh] bg-no-repeat bg-cover bg-center flex flex-col items-center justify-center text-white"
+        className="relative h-[50vh] bg-no-repeat bg-cover bg-center flex flex-col items-center justify-center text-white"
         style={{
           backgroundImage: `url(https://cdn.pixabay.com/photo/2016/01/08/01/53/gymer-1126999_960_720.jpg)`,
         }}
@@ -82,8 +82,10 @@ function Dashboard() {
             {introText}
           </h1>
         </div>
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from transparent to-gray-200" />
       </div>
-      <div className=" bg-gray-900 text-white p-10 flex-1">
+      <div className=" bg-gray-200 p-10 flex-1">
+        {/* BG used to be gray-800 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto mt-5">
           {/* Card 1*/}
           <div className="bg-[#2A2A2A] rounded-xl p-6 text-white text-center flex flex-col h-full">

@@ -68,7 +68,7 @@ function Dashboard() {
   }, [username]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-[calc(100vh-72px)] flex flex-col">
       {" "}
       {/* flex flex-col and flex-1 later on ensures is 100% height (for when I forget) */}
       <div
@@ -84,7 +84,7 @@ function Dashboard() {
         </div>
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from transparent to-gray-200" />
       </div>
-      <div className=" bg-gray-200 p-10 flex-1">
+      <div className=" bg-gray-200 flex-1 p-10">
         {/* BG used to be gray-800 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto mt-5">
           {/* Card 1*/}

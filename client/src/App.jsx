@@ -18,48 +18,25 @@ function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>
 
-        <Route element={<Layout />}>
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          ></Route>
+        <Route
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/dashboard" element={<Dashboard />}></Route>
 
-          <Route
-            path="/workout/:id"
-            element={
-              <ProtectedRoute>
-                <StartWorkout />
-              </ProtectedRoute>
-            }
-          ></Route>
+          <Route path="/workout/:id" element={<StartWorkout />}></Route>
 
           <Route
             path="/completedWorkout/:id"
-            element={
-              <ProtectedRoute>
-                <CompletedWorkoutHistory />
-              </ProtectedRoute>
-            }
+            element={<CompletedWorkoutHistory />}
           ></Route>
-          <Route
-            path="/trackWeight"
-            element={
-              <ProtectedRoute>
-                <TrackWeight />
-              </ProtectedRoute>
-            }
-          ></Route>
+          <Route path="/trackWeight" element={<TrackWeight />}></Route>
           <Route
             path="*"
-            element={
-              <ProtectedRoute>
-                <NotFound message="Page not found" />
-              </ProtectedRoute>
-            }
+            element={<NotFound message="Page not found" />}
           ></Route>
         </Route>
       </Routes>

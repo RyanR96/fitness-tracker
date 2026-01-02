@@ -8,7 +8,7 @@ function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/login");
+    navigate("/");
   };
   return (
     <nav className="flex justify-between items-center bg-black text-white shadow p-4">

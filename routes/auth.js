@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const verifyToken = require("../middleware/verifyToken");
 
 const router = express.Router();
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // router.post("/login", (req, res) => {
 //   // Mock user
@@ -32,7 +33,7 @@ router.post("/login", async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(401).json({ message: "Invalid password" });
 
-    const token = jwt.sign({ id: user.id }, "secret", { expiresIn: "14d" });
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "14d" });
     res.json({ token });
   } catch (err) {
     res.send(err.message);
@@ -58,7 +59,7 @@ router.post("/signup", async (req, res) => {
       },
     });
 
-    const token = jwt.sign({ id: user.id }, "secret", { expiresIn: "7d" });
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "7d" });
     res.json({ token });
   } catch (err) {
     res.send(err.message);

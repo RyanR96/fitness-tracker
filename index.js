@@ -7,13 +7,14 @@ const verifyToken = require("./middleware/verifyToken");
 const workoutRoutes = require("./routes/api/workout");
 const completedWorkoutRoutes = require("./routes/api/completedWorkout");
 const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   })
 );
@@ -65,6 +66,6 @@ app.get("/users", async (req, res) => {
   res.send(users);
 });
 
-app.listen(3000, () => {
-  console.log("listening on port 3000");
+app.listen(process.env.PORT, () => {
+  console.log(`listening on port ${process.env.PORT}`);
 });

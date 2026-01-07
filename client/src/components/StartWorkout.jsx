@@ -8,6 +8,7 @@ import NotFound from "./NotFound";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
 
 function StartWorkout() {
+  const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const { id } = useParams();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -40,7 +41,7 @@ function StartWorkout() {
     const fetchWorkout = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`http://localhost:3000/api/workouts/${id}`, {
+        const res = await fetch(`${API_URL}/api/workouts/${id}`, {
           headers: {
             method: "GET",
             Authorization: `bearer ${token}`,
@@ -169,7 +170,7 @@ function StartWorkout() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3000/api/completedWorkouts/", {
+      const res = await fetch(`${API_URL}/api/completedWorkouts/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

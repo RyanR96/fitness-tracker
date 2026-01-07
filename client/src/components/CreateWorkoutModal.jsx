@@ -9,6 +9,7 @@ import {
 import { toast } from "sonner";
 
 function CreateWorkoutModal(props) {
+  const API_URL = import.meta.env.VITE_API_URL;
   const { isOpen, onClose } = props;
   const [fetchedExercises, setfetchedExercises] = useState([]);
   const [allExercises, setAllExercises] = useState([]);
@@ -23,13 +24,10 @@ function CreateWorkoutModal(props) {
     const fetchExercises = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(
-          "http://localhost:3000/api/workouts/exerciseName",
-          {
-            method: "GET",
-            headers: { Authorization: `bearer ${token}` },
-          }
-        );
+        const res = await fetch(`${API_URL}/api/workouts/exerciseName`, {
+          method: "GET",
+          headers: { Authorization: `bearer ${token}` },
+        });
 
         if (!res.ok) throw new Error("failed to get exercises");
 
@@ -91,7 +89,7 @@ function CreateWorkoutModal(props) {
       };
       console.log(JSON.stringify(workoutData, null, 2));
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3000/api/workouts", {
+      const res = await fetch(`${API_URL}/api/workouts`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",

@@ -5,6 +5,7 @@ import NotFound from "./NotFound";
 
 function CompletedWorkoutHistory() {
   //const location = useLocation(); old way, keeping it in as reminder lol
+  const API_URL = import.meta.env.VITE_API_URL;
   const { id } = useParams();
   const [completedWorkout, setCompletedWorkouts] = useState(null);
   const [error, setError] = useState(null);
@@ -14,15 +15,12 @@ function CompletedWorkoutHistory() {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(
-          `http://localhost:3000/api/completedworkouts/${id}`,
-          {
-            headers: {
-              method: "GET",
-              Authorization: `bearer ${token}`,
-            },
-          }
-        );
+        const res = await fetch(`${API_URL}/api/completedworkouts/${id}`, {
+          headers: {
+            method: "GET",
+            Authorization: `bearer ${token}`,
+          },
+        });
 
         if (!res.ok) {
           if (res.status === 404) {

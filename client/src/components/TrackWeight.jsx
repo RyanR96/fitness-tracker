@@ -13,6 +13,7 @@ import { motion, AnimatePresence, easeInOut } from "framer-motion";
 import { toast } from "sonner";
 
 function TrackWeight() {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [weightData, setWeightData] = useState([]);
 
@@ -25,7 +26,7 @@ function TrackWeight() {
     const fetchWeight = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:3000/api/weightTracker/", {
+        const res = await fetch(`${API_URL}/api/weightTracker/`, {
           headers: {
             Authorization: `bearer ${token}`,
           },
@@ -77,7 +78,7 @@ function TrackWeight() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3000/api/weightTracker/", {
+      const res = await fetch(`${API_URL}/api/weightTracker/`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -126,7 +127,7 @@ function TrackWeight() {
     console.log(id);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:3000/api/weightTracker/${id}`, {
+      const res = await fetch(`${API_URL}/api/weightTracker/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `bearer ${token}`,

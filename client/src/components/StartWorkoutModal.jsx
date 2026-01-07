@@ -5,6 +5,7 @@ import ConfirmFinishModal from "./ConfirmFinishModal";
 import { toast } from "sonner";
 
 function StartWorkoutModal(props) {
+  const API_URL = import.meta.env.VITE_API_URL;
   const { isOpen, onClose } = props;
   const navigate = useNavigate();
 
@@ -28,7 +29,7 @@ function StartWorkoutModal(props) {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:3000/api/workouts/", {
+        const res = await fetch(`${API_URL}/api/workouts/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -80,13 +81,10 @@ function StartWorkoutModal(props) {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(
-        `http://localhost:3000/api/workouts/${selectedWorkout.id}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `bearer ${token}` },
-        }
-      );
+      const res = await fetch(`${API_URL}/api/workouts/${selectedWorkout.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `bearer ${token}` },
+      });
       if (!res.ok) throw new Error("Failed to delete workout");
 
       setWorkouts(prev =>

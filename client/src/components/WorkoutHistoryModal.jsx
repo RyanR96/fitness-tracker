@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 function WorkoutHistoryModal(props) {
   //const { isOpen, workouts, completedWorkouts, onClose } = props;
+  const API_URL = import.meta.env.VITE_API_URL;
   const { isOpen, onClose } = props;
 
   const navigate = useNavigate();
@@ -31,12 +32,12 @@ function WorkoutHistoryModal(props) {
       try {
         const token = localStorage.getItem("token");
         const [workoutRes, completedRes] = await Promise.all([
-          fetch("http://localhost:3000/api/workouts/", {
+          fetch(`${API_URL}/api/workouts/`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }),
-          fetch("http://localhost:3000/api/completedWorkouts/", {
+          fetch(`${API_URL}/api/completedWorkouts/`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -112,7 +113,7 @@ function WorkoutHistoryModal(props) {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `http://localhost:3000/api/completedWorkouts/${selectedCompletedWorkout.id}`,
+        `${API_URL}/api/completedWorkouts/${selectedCompletedWorkout.id}`,
         {
           method: "DELETE",
           headers: { Authorization: `bearer ${token}` },

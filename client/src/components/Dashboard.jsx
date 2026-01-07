@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useLocation } from "react-router-dom";
 
 function Dashboard() {
+  const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const location = useLocation();
   const [isCreateWorkoutModalOpen, setIsCreateWorkoutModalOpen] =
@@ -33,7 +34,7 @@ function Dashboard() {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:3000/auth/me", {
+        const res = await fetch(`${API_URL}/auth/me`, {
           headers: {
             Authorization: `bearer ${token}`,
           },

@@ -54,9 +54,9 @@ function WorkoutHistoryModal(props) {
           completedRes.json(),
         ]);
 
-        console.log("Workout data for HistoryModal is:", workoutData);
+        //console.log("Workout data for HistoryModal is:", workoutData);
         setWorkouts(workoutData);
-        console.log("CW data for HistoryModal is:", completedData);
+        //console.log("CW data for HistoryModal is:", completedData);
         setCompletedWorkouts(completedData);
       } catch (err) {
         console.error(err);
@@ -108,8 +108,6 @@ function WorkoutHistoryModal(props) {
 */
 
   const handleDelete = async () => {
-    console.log("workout to delete is :", selectedCompletedWorkout);
-
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(

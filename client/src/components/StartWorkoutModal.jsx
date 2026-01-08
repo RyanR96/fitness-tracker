@@ -16,15 +16,7 @@ function StartWorkoutModal(props) {
 
   useEffect(() => {
     if (!isOpen) return; // Prevent needless fetch when close
-    /**    setWorkouts([
-      { id: 1, name: "Push day", exercises: ["Bench press", "overhead Press"] },
-      { id: 2, name: "Leg day", exercises: ["Dips", "overhead Press"] },
-      {
-        id: 3,
-        name: "Pull day",
-        exercises: ["Tricep", "overhead Press", "test"],
-      },
-    ]); */
+
     const fetchWorkouts = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -38,13 +30,12 @@ function StartWorkoutModal(props) {
 
         const data = await res.json();
 
-        console.log(data);
         const formattedData = data.map(w => ({
           id: w.id,
           name: w.name,
           exercises: w.exercises.map(e => e.exerciseTemplateName),
         }));
-        console.log(formattedData);
+
         setWorkouts(formattedData);
         setError("");
       } catch (err) {
@@ -77,8 +68,6 @@ function StartWorkoutModal(props) {
   };
 
   const handleDelete = async () => {
-    console.log("workout to delete is :", selectedWorkout);
-
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(`${API_URL}/api/workouts/${selectedWorkout.id}`, {

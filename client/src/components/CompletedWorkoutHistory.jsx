@@ -32,7 +32,7 @@ function CompletedWorkoutHistory() {
         }
 
         const data = await res.json();
-        console.log("Fetched:", data);
+
         setCompletedWorkouts(data);
       } catch (err) {
         console.error(err.message);

@@ -29,7 +29,7 @@ function Login() {
       if (!res.ok) {
         throw new Error(data.message || "Error when logging in");
       }
-      console.log(data);
+
       localStorage.setItem("token", data.token);
       navigate("/dashboard", {
         state: { loginSuccesful: true },

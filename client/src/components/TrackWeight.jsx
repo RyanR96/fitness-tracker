@@ -37,13 +37,12 @@ function TrackWeight() {
         }
 
         const data = await res.json();
-        console.log(data);
+
         const formattedData = data.map(entry => ({
           id: entry.id,
           weight: entry.weight,
           date: new Date(entry.date).getTime(),
         }));
-        console.log("Formatted data", formattedData);
 
         setWeightData(formattedData);
       } catch (err) {
@@ -51,7 +50,7 @@ function TrackWeight() {
       }
     };
     fetchWeight();
-  }, []); //Probably needs to be when new weight is added, maybe the state newWeight?
+  }, []); //Probably could be when new weight is added, maybe the state newWeight?
 
   const handleEntry = async () => {
     if (!newDate || !newWeight) {
@@ -99,12 +98,15 @@ function TrackWeight() {
         ...newEntry,
         date: new Date(newEntry.date).getTime(),
       };
-      console.log("Pushing this data", formattedEntry);
+
+      /**
+       * console.log("Pushing this data", formattedEntry);
       console.log("Pushing that into", weightData);
+       */
       const updatedData = [...weightData, formattedEntry].sort(
         (a, b) => a.date - b.date
       );
-      console.log("Post pushing data", updatedData);
+
       setWeightData(updatedData);
       setNewData("");
       setNewWeight("");
@@ -124,7 +126,6 @@ function TrackWeight() {
   };
 
   const handleDelete = async id => {
-    console.log(id);
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(`${API_URL}/api/weightTracker/${id}`, {

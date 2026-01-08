@@ -20,30 +20,13 @@ function StartWorkout() {
   const [error, setError] = useState(null);
   const setsRef = useRef();
 
-  /**
-   *  const workout = {
-    id: 1,
-    name: "Push Day",
-    exercises: [
-      {
-        exerciseTemplateName: "Push Ups",
-        sets: [{ weight: "", reps: "", formRating: 1, dropSet: false }],
-      },
-      {
-        exerciseTemplateName: "Bench Press",
-        sets: [{ weight: "", reps: "", formRating: 1, dropSet: false }],
-      },
-    ],
-  };
-   */
-
   useEffect(() => {
     const fetchWorkout = async () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(`${API_URL}/api/workouts/${id}`, {
+          method: "GET",
           headers: {
-            method: "GET",
             Authorization: `bearer ${token}`,
           },
         });
@@ -58,7 +41,6 @@ function StartWorkout() {
         }
 
         const data = await res.json();
-        console.log("Pre formatted Data:", data);
 
         const formattedWorkout = {
           ...data,
@@ -67,7 +49,6 @@ function StartWorkout() {
             sets: [{ weight: "", reps: "", formRating: 1, dropSet: false }],
           })),
         };
-        console.log("Post formatted data", formattedWorkout);
         setWorkout(formattedWorkout);
         setExercise(formattedWorkout.exercises);
       } catch (err) {
@@ -94,22 +75,18 @@ function StartWorkout() {
     setExercise(prev => {
       const newData = [...prev];
       newData[currentExerciseIndex].sets[setIndex][field] = value;
-      console.log(newData);
+
       return newData;
     });
   };
 
   const addSet = () => {
     /** 
-    if (currentExercise.sets.length >= 10) {
-      alert("Too many sets!");
-      return;
-    }
-*/
     console.log("exercise", exercise);
     console.log("current exercise", currentExercise);
     console.log("current exercise index", currentExerciseIndex);
     console.log("exercise length", exercise.length);
+*/
     setExercise(prev => {
       const newData = [...prev];
 
@@ -135,8 +112,6 @@ function StartWorkout() {
   };
 
   const handleFinish = async () => {
-    console.log(exercise);
-
     const completedExercise = exercise.map((ex, index) => ({
       exerciseTemplateName: ex.exerciseTemplateName,
       order: index,
@@ -163,10 +138,12 @@ function StartWorkout() {
       return;
     }
 
-    console.log("Data to send:", {
+    /**
+     *     console.log("Data to send:", {
       workoutId: workout.id,
       completedExercises: filteredExercises,
     });
+     */
 
     try {
       const token = localStorage.getItem("token");
@@ -187,7 +164,7 @@ function StartWorkout() {
       }
       // can kinda delete this part?
       const data = await res.json();
-      console.log("Workout saved", data);
+      console.log("Workout saved");
       setExercise(workout.exercises);
       navigate("/dashboard", {
         state: { workoutCompleted: true },

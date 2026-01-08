@@ -28,19 +28,9 @@ function CreateAccountModal(props) {
     });
 
     if (Object.keys(newErrors).length > 0) {
-      console.log("Hit the form validation error ");
       return;
     }
-    /**  previous mocked code
-    if (Object.keys(newErrors).length === 0) {
-      console.log("Signed up with:", { username, password });
 
-      onClose();
-      setUsername("");
-      setPassword("");
-      setConfirmPassword("");
-    }
-*/
     try {
       const res = await fetch(`${API_URL}/auth/signup`, {
         method: "POST",

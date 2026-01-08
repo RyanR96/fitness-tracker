@@ -19,8 +19,6 @@ function CreateWorkoutModal(props) {
   const [searchExercises, setSearchExercises] = useState("");
 
   useEffect(() => {
-    //setAllExercises(["Bench Press", "Overhead Press", "Push ups"]);
-
     const fetchExercises = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -32,10 +30,10 @@ function CreateWorkoutModal(props) {
         if (!res.ok) throw new Error("failed to get exercises");
 
         const data = await res.json();
-        console.log("data is :", data);
+
         setfetchedExercises(data);
         setAllExercises(data);
-        console.log("All exercises state is:", allExercises);
+        //console.log("All exercises state is:", allExercises);
       } catch (err) {
         console.error("Error fetching exercises", err);
         setError(err.message);
@@ -87,7 +85,7 @@ function CreateWorkoutModal(props) {
         name: workoutName,
         exerciseTemplateName: selectedExercise.map(ex => ex.name),
       };
-      console.log(JSON.stringify(workoutData, null, 2));
+      //console.log(JSON.stringify(workoutData, null, 2));
       const token = localStorage.getItem("token");
       const res = await fetch(`${API_URL}/api/workouts`, {
         method: "POST",
@@ -112,7 +110,7 @@ function CreateWorkoutModal(props) {
       setError("");
       setSearchExercises("");
       setAllExercises([...fetchedExercises]);
-      console.log("Workout created with data:", data);
+
       toast.success("Workout succesfully created");
     } catch (err) {
       console.error("Error creating workout", err.message);
